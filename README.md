@@ -4,27 +4,47 @@ View your schedule, create appointments, invite other users, and avoid schedulin
 # Website wireframe
 
 # User stories
-User can view their schedule
-Example:
-Monday 1/22/24
-Doctor appointment 1:30 pm - 3:30 pm
-Tuesday 1/23/24
-	Lunch with my dog 12:00 pm - 1:00 pm
-Salsa lessons 6:30 pm - 8:30 pm
-Wednesday 1/24/24
-Meeting with Sean, Jennipher, Shal, Evan 10:00 am - 11:00 am
-User can add appointments to his schedule
+1. User can view their schedule
+
+	Example:
+
+	Monday 1/22/24
+
+		Doctor appointment 1:30 pm - 3:30 pm
+
+	Tuesday 1/23/24
+
+		Lunch with my dog 12:00 pm - 1:00 pm
+
+		Salsa lessons 6:30 pm - 8:30 pm
+
+	Wednesday 1/24/24
+
+		Meeting with Sean, Jennipher, Shal, Evan 10:00 am - 11:00 am
+
+2. User can add appointments to his schedule
+
 Specify duration, location, name, description
-User can invite other users to his appointments (becomes a meeting)
+
+3. User can invite other users to his appointments (becomes a meeting)
+
 Either specify start time or have the app suggest the earliest available time for everyone who is invited
-User can receive invitations to appointments	
+
+4. User can receive invitations to appointments	
+
 Status: Unconfirmed, confirmed, maybe, not going
-User can update status
-User can see the status of invitees in their appointments
-User is alerted of schedule conflicts
-User can reschedule appointments
-User can cancel appointments
-User can delete appointments
+
+5. User can update status
+
+6. User can see the status of invitees in their appointments
+
+7. User is alerted of schedule conflicts
+
+8. User can reschedule appointments
+
+9. User can cancel appointments
+
+10. User can delete appointments
 
 # Database schema
 
