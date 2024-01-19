@@ -1,6 +1,8 @@
 # phase-4-project-MeetMe
 View your schedule, create appointments, invite other users, and avoid scheduling conflicts.
 
+# Website wireframe
+
 # User stories
 User can view their schedule
 Example:
@@ -23,3 +25,13 @@ User is alerted of schedule conflicts
 User can reschedule appointments
 User can cancel appointments
 User can delete appointments
+
+# Database schema
+
+# React component tree diagram
+
+# API route endpoints, verbs, purposes, response structures
+
+# Screenshot Trello board
+
+# Stretch Goals
