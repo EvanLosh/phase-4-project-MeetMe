@@ -1,7 +1,7 @@
 # phase-4-project-MeetMe
 View your schedule, create appointments, invite other users, and avoid scheduling conflicts.
 
-#User stories
+# User stories
 User can view their schedule
 Example:
 Monday 1/22/24
