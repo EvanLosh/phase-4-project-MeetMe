@@ -8,6 +8,7 @@ import CreateAppointment from "./CreateAppointment";
 import AppointmentsForm from "./AppointmentsForm";
 import ViewAppointment from "./ViewAppointment";
 import ModifyAppointment from "./ModifyAppointment";
+import Footer from "./Footer";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +43,7 @@ function App() {
   return <div id="app">
     <Header />
     <RouterProvider router={router} />
-
+    <Footer />
   </div>;
 }
 

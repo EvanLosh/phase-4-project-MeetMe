@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import RenderCalendar from "./RenderCalendar";
+import "./NewUserForm.css"
 
 
 function NewUserForm() {

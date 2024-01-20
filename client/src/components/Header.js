@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import RenderCalendar from "./RenderCalendar";
+import "./Header.css"
 
 
 function Header() {
     return <div id="header">
-        <p>Header</p>
+        <h1>MeetMe</h1>
     </div>;
 }
 
