@@ -1,4 +1,11 @@
-import moment from 'moment'
+import React, { useEffect, useState } from "react";
+import RenderCalendar from "./RenderCalendar";
 
-console.log(moment())
-console.log(moment().toDate())
+
+function Debug() {
+    return <div id="debug">
+        <p>Debug</p>
+    </div>;
+}
+
+export default Debug;
