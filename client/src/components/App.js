@@ -1,14 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { createBrowserRouter, RouterProvider, Switch, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Switch, Route, useParams } from "react-router-dom";
 import Home from "./Home";
 import NewUserForm from "./NewUserForm"
 import "./App.css"
+import Header from "./Header";
+import CreateAppointment from "./CreateAppointment";
+import AppointmentsForm from "./AppointmentsForm";
+import ViewAppointment from "./ViewAppointment";
+import ModifyAppointment from "./ModifyAppointment";
 
 const router = createBrowserRouter([
   {
+
     path: "/",
     // Props to Home get passed here
-    element: <Home />
+    element: <Home />,
+    children:
+      [{
+        path: '',
+        element: (<AppointmentsForm child={<CreateAppointment />} />),
+      },
+      {
+        path: 'view/:appointmentId',
+        element: (<AppointmentsForm child={'view'} id={useParams.appointmentId} />),
+      },
+      {
+        /* modify appointment */
+      }
+      ]
   },
   {
     path: "/new-user",
@@ -17,9 +36,13 @@ const router = createBrowserRouter([
   }
 ])
 
+
+
 function App() {
-  return <div className="calendar-container">
+  return <div id="app">
+    <Header />
     <RouterProvider router={router} />
+
   </div>;
 }
 
