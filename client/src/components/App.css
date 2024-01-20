@@ -1,5 +1,7 @@
-@import 'react-big-calendar/lib/sass/styles';
-
 .calendar-container {
     height: 800px;
+}
+
+#home {
+    color: red;
 }
