@@ -5,8 +5,9 @@ import moment from 'moment'
 const localizer = momentLocalizer(moment)
 const myEventsList = []
 
-function MyCalendar() {
+function RenderCalendar() {
   <div>
+    <p>2</p>
     <Calendar
       localizer={localizer}
       events={myEventsList}
@@ -17,4 +18,4 @@ function MyCalendar() {
   </div>
 }
 
-export default MyCalendar
+export default RenderCalendar
