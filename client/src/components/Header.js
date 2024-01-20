@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import "./Header.css"
 
 
-function Header() {
-    return <div id="header">
-        <h1 id="site-title">MeetMe</h1>
-        <div id="header-stuff">
+function Header({ users, theUser }) {
+    if (theUser.username.length < 1) {
+        theUser.username = "None"
+    }
 
-            <p>Select user</p>
-            <p><a href="/new-user">Create user</a></p>
+    return <div id="header">
+        <h1 id="site-title"><a href="/">MeetMe</a></h1>
+        <div id="header-stuff">
+            <p>Current user: {theUser.username}</p>
+            <p>Change user{/* make a drop down list of all usernames */}</p>
+            <a href="/new-user">Create new user</a>
         </div>
     </div>;
 }

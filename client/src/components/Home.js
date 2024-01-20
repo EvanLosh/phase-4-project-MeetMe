@@ -4,10 +4,10 @@ import AppointmentsForm from "./AppointmentsForm";
 import "./Home.css"
 
 
-function Home() {
+function Home({ theUser }) {
     return <div id="home">
-        <RenderCalendar />
-        <AppointmentsForm />
+        <RenderCalendar theUser={theUser} />
+        <AppointmentsForm theUser={theUser} />
     </div>;
 }
 
