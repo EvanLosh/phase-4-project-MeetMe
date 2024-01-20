@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import RenderCalendar from "./RenderCalendar";
 
 
 function Home() {
     return <div id="home">
-        <p>Home</p>
+        <RenderCalendar />
     </div>;
 }
 

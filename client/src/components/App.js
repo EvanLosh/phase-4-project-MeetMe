@@ -6,9 +6,7 @@ import "./App.css"
 
 function App() {
   return <div className="calendar-container">
-    <p>1</p>
     <Home />
-    <RenderCalendar />
   </div>;
 }
 
