@@ -45,6 +45,9 @@ Status: Unconfirmed, confirmed, maybe, not going
 9. User can cancel appointments
 
 10. User can delete appointments
+ 
+# Wireframe
+<img width="453" alt="Screenshot_2024-01-19_174154 (1)" src="https://github.com/EvanLosh/phase-4-project-MeetMe/assets/105055453/9db737a4-8df0-483a-9b39-d3d2dcf1c6a0">
 
 # Database schema
 
