@@ -51,6 +51,8 @@ Status: Unconfirmed, confirmed, maybe, not going
 # React component tree diagram
 
 # API route endpoints, verbs, purposes, response structures
+<img width="435" alt="Screenshot 2024-01-22 at 11 12 22 AM" src="https://github.com/EvanLosh/phase-4-project-MeetMe/assets/146296280/18e72731-dc45-4715-b8ac-6823a91d65a2">
+
 
 # Screenshot Trello board
 <img width="1133" alt="Screenshot 2024-01-22 at 11 07 51 AM" src="https://github.com/EvanLosh/phase-4-project-MeetMe/assets/146296280/2c606ea5-eb86-49cb-bdc0-06bca8ebfe05">
