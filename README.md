@@ -63,3 +63,7 @@ Status: Unconfirmed, confirmed, maybe, not going
 <img width="1133" alt="Screenshot 2024-01-22 at 11 07 51 AM" src="https://github.com/EvanLosh/phase-4-project-MeetMe/assets/146296280/2c606ea5-eb86-49cb-bdc0-06bca8ebfe05">
 
 # Stretch Goals
+1. User gets a notification when an appointment is coming up. 
+2. User gets a notification when there is an update to an appointment that they RSVP'd to.
+3. User can set custom alerts for appointments.
+4. User can message attendees of an appointment.
