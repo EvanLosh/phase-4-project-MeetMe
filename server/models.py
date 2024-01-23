@@ -28,6 +28,10 @@ class Appointment(db.Model, SerializerMixin):
     description = db.Column(db.Text, nullable=True)
     status = db.Column(db.String(50), nullable=False) 
     
+    user = db.relationship('Attendance', backref= 'appointment')
+    
+    def __repr__(self):
+        return f'Appointment(id={self.id}, owner_id={self.owner_id}, title={self.title}, location={self.location}, description={self.description})'
      
 
 class Attendance(db.Model, SerializerMixin):
