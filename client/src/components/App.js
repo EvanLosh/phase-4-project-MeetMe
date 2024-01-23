@@ -18,12 +18,12 @@ const router = createBrowserRouter([
     element: <Home />,
     children:
       [{
-        path: '',
-        element: (<AppointmentsForm child={<CreateAppointment />} />),
+        path: "",
+        element: (<AppointmentsForm />),
       },
       {
-        path: 'view/:appointmentId',
-        element: (<AppointmentsForm child={'view'} id={useParams.appointmentId} />),
+        path: ":child/:id",
+        element: (<AppointmentsForm />),
       },
       {
         /* modify appointment */
