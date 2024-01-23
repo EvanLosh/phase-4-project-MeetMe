@@ -1,29 +1,26 @@
 #!/usr/bin/env python3
 
 # Standard library imports
+from flask import Flask
+from flask_restful import Api
 
-# Remote library imports
-from Flask import Flask
-from flask import request
-from flask_restful import Resource
-
+# Local imports
+from models import db
+from calendarResource import CalendarResource
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'  # Use your actual database URI
 db.init_app(app)
 
+api = Api(app)  # Initialize the api object
 
-# Local imports
-from config import app, db, api
 # Add your model imports
-
+api.add_resource(CalendarResource, '/calendar/<int:user_id>')
 
 # Views go here!
-
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
 
-
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(debug=True)
