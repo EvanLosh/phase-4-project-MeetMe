@@ -11,12 +11,22 @@ class User(db.Model, SerializerMixin):
     serialize_rules = ('-appointment.user',)
    
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(20), nullable=False)
     
     appointment = db.relationship('Attendance', backref='user')
     
     def __repr__(self):
         return f'User(id={self.id}, username={self.username})'
+    
+    @validates('username')
+    def validates_username(self,key,value):
+        if not value:
+            raise ValueError('Invalid username')
+        if len(value) >20:
+            raise ValueError('Username cannot exceed 20 characters')
+        
+        return value
+        
         
 class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
