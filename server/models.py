@@ -60,7 +60,7 @@ class Appointment(db.Model, SerializerMixin):
         return value
 
 class Attendance(db.Model, SerializerMixin):
-    __tablename__ = 'attendances'  # Corrected tablename
+    __tablename__ = 'attendances'  
     serialize_rules = ('-user.appointment', '-appointment.user')
     
     id = db.Column(db.Integer, primary_key=True)
