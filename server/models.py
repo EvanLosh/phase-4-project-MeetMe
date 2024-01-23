@@ -33,12 +33,12 @@ class Appointment(db.Model, SerializerMixin):
     serialize_rules = ('-user.appointment',)
    
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Corrected ForeignKey
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  
     start_time = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(255), nullable=False)
     location = db.Column(db.Text, nullable=False)
-    description = db.Column(db.Text, nullable=True)  # Removed (255)
+    description = db.Column(db.Text, nullable=True)  
     status = db.Column(db.String(50), nullable=False) 
     
     user = db.relationship('Attendance', backref='appointment')
@@ -57,7 +57,7 @@ class Appointment(db.Model, SerializerMixin):
 
     @validates('description')
     def validates_description(self, key, value):
-        if value is not None and len(value) > 255:  #  None before length validation
+        if value is not None and len(value) > 255:  #  
             raise ValueError("Description cannot exceed 255 characters")
         return value
      
@@ -74,6 +74,6 @@ class Attendance(db.Model, SerializerMixin):
     serialize_rules = ('-user.appointment', '-appointment.user')
     
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Corrected ForeignKey
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)  # Corrected ForeignKey
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)  
     status = db.Column(db.String(50), nullable=False)
