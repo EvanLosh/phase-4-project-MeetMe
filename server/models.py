@@ -14,6 +14,16 @@ class User(db.Model, SerializerMixin):
    
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), nullable=False)
+    
+    appointment = db.relatioship('Attendance', backref='user')
+    
+    def __repr__(self):
+        return f'User(id={self.id})'
+        
+    
+
+        
+        
 
 class Appointment(db.Model, SerializerMixin):
     __tablename__= 'appointments'
