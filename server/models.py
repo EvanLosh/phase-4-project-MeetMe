@@ -18,7 +18,7 @@ class User(db.Model, SerializerMixin):
     appointment = db.relatioship('Attendance', backref='user')
     
     def __repr__(self):
-        return f'User(id={self.id})'
+        return f'User(id={self.id}, username={self.username})'
         
     
 
@@ -51,3 +51,4 @@ class Attendance(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'), nullable=False)
     status = db.Column(db.String(50), nullable=False)  
+
