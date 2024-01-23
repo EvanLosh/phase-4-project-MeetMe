@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import CreateAppointment from "./CreateAppointment";
 import ViewAppointment from "./ViewAppointment";
 import ModifyAppointment from "./ModifyAppointment";
+import "./AppointmentsForm.css"
 
 
-function children(child, id=-1) {
+function chooseForm(child, id = -1) {
     if (child === "view") {
         return <ViewAppointment id={id} />
     }
@@ -20,7 +21,7 @@ function children(child, id=-1) {
 function AppointmentsForm({ child, id }) {
     return <div id="appointments-form">
         <p>appointments form</p>
-        {children(child, id)}
+        {chooseForm(child, id)}
     </div>;
 }
 
