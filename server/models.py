@@ -42,6 +42,12 @@ class Appointment(db.Model, SerializerMixin):
     
     def __repr__(self):
         return f'Appointment(id={self.id}, owner_id={self.owner_id}, title={self.title}, location={self.location}, description={self.description})'
+    @validates('title')
+    def validates_title(self,key,value):
+        if value is >= 0 and value <= 255:
+            return value
+        raise ValueError('title must be between 0 and 255 characters')
+            
      
 
 class Attendance(db.Model, SerializerMixin):
