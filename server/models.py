@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm import validates
 
 from config import db
 db = SQLAlchemy()
@@ -42,12 +43,15 @@ class Appointment(db.Model, SerializerMixin):
     
     def __repr__(self):
         return f'Appointment(id={self.id}, owner_id={self.owner_id}, title={self.title}, location={self.location}, description={self.description})'
+    
     @validates('title')
     def validates_title(self,key,value):
-        if value is >= 0 and value <= 255:
-            return value
-        raise ValueError('title must be between 0 and 255 characters')
-            
+        if not value:
+            raise ValueError("Title cannot be empty")
+        if len(value) > 255:
+            raise ValueError("Title cannot exceed 255 characters")
+        
+        return value
      
 
 class Attendance(db.Model, SerializerMixin):
@@ -57,4 +61,3 @@ class Attendance(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointment.id'), nullable=False)
     status = db.Column(db.String(50), nullable=False)  
-
