@@ -77,4 +77,18 @@ class Attendance(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Corrected ForeignKey
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)  # Corrected ForeignKey
     status = db.Column(db.String(50), nullable=False)
+    
+    @validates('status')
+    def validates_status(self,key,value):
+        if not value:
+            raise ValueError("Status cannot be empty")
+        if len(value) > 50:
+             raise ValueError("Status cannot exceed 50 characters")
+        return value
+        
+         
+            
+       
+    
+    
 
