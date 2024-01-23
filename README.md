@@ -67,3 +67,5 @@ Status: Unconfirmed, confirmed, maybe, not going
 2. User gets a notification when there is an update to an appointment that they RSVP'd to.
 3. User can set custom alerts for appointments.
 4. User can message attendees of an appointment.
+5. Users can log into their calendar through a password protected sign in. 
+
