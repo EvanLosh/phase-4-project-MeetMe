@@ -11,7 +11,7 @@ class User(db.Model, SerializerMixin):
     serialize_rules = ('-appointment.user',)
    
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20), nullable=False)
+    username = db.Column(db.Varchar(20), nullable=False)
     
     appointment = db.relationship('Attendance', backref='user')
     
@@ -28,17 +28,17 @@ class User(db.Model, SerializerMixin):
         return value
         
         
-class Appointment(db.Model, SerializerMixin):
+class Appointments(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
     serialize_rules = ('-user.appointment',)
    
     id = db.Column(db.Integer, primary_key=True)
-    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Corrected ForeignKey
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Check on this
     start_time = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.Integer, nullable=False)
+    duration = db.Column(db.Varchar, nullable=False)
     title = db.Column(db.String(255), nullable=False)
-    location = db.Column(db.Text, nullable=False)
-    description = db.Column(db.Text, nullable=True)  # Removed (255)
+    location = db.Column(db.Varchar, nullable=False)
+    description = db.Column(db.String, nullable=True)  # Removed (255)
     status = db.Column(db.String(50), nullable=False) 
     
     user = db.relationship('Attendance', backref='appointment')
