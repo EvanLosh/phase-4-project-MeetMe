@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import RenderCalendar from "./RenderCalendar";
 
 
-function ViewAppointmentForm() {
+function ViewAppointment({ id }) {
     return <div id="view-appointment">
         <p>View appointment</p>
     </div>;
 }
 
-export default ViewAppointmentForm;
+export default ViewAppointment;
