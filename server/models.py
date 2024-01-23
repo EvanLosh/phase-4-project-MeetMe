@@ -18,7 +18,7 @@ class User(db.Model, SerializerMixin):
     appointment = db.relatioship('Attendance', backref='user')
     
     def __repr__(self):
-        return f'User(id={self.id})'
+        return f'User(id={self.id}, username={self.username})'
         
     
 
