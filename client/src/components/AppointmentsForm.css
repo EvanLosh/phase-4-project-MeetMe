@@ -4,3 +4,12 @@
     margin: 20px;
     min-width: 300px;
 }
+
+#appointment-form-options * {
+    padding: 20px;
+}
+
+#appointment-form-options {
+    display: flex;
+    justify-content: space-between;
+}
