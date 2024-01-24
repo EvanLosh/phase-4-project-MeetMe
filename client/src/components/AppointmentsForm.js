@@ -21,6 +21,28 @@ const blankAppointment = {
     ]
 }
 
+function stringifyAttendeesJSON(list) {
+    let stringify = ''
+    for (let i = 0; i < list.length; i++) {
+        if (i === (list.length - 1)) {
+            stringify = stringify + list[i].username
+        }
+        else {
+            stringify = stringify + list[i].username + ", "
+        }
+    }
+    return stringify
+}
+
+function jsonifyAttendeesString(string) {
+    let attendees = []
+    let stringList = string.split(", ")
+    for (let i = 0; i < stringList.length; i++) {
+        attendees.push({ username: stringList[i], status: 'Uncomfirmed' })
+    }
+    return attendees
+}
+
 
 function AppointmentsForm() {
     const { child, id } = useParams()
@@ -35,10 +57,10 @@ function AppointmentsForm() {
             return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
         }
         else if (child === "modify") {
-            return <ModifyAppointment id={id} appointment={appointment} attendees={attendees} />
+            return <ModifyAppointment id={id} appointment={appointment} attendees={attendees} jsonifyAttendeesString={jsonifyAttendeesString} />
         }
         else {
-            return <CreateAppointment />
+            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
         }
     }
 
