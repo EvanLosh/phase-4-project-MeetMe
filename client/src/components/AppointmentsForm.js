@@ -71,7 +71,7 @@ function AppointmentsForm() {
         else {
             return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
         }
-    }
+    }}
     return (
         <div id="appointments-form">
             <p>appointments form</p>
