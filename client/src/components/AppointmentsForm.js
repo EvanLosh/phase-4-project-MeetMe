@@ -5,24 +5,42 @@ import ModifyAppointment from "./ModifyAppointment";
 import "./AppointmentsForm.css"
 import { useParams } from "react-router-dom"
 
+const blankAppointment = {
+    title: '',
+    start: '',
+    end: '',
+    description: '',
+    owner: '',
+    location: '',
+    status: 'Active',
+    attendees: [
+        {
+            username: '',
+            status: ''
+        }
+    ]
 
-function chooseForm(child, id = -1) {
-    if (child === "view") {
-        return <ViewAppointment id={id} />
-    }
-    else if (child === "modify") {
-        return <ModifyAppointment id={id} />
-    }
-    else {
-        return <CreateAppointment />
-    }
 }
-
 
 
 
 function AppointmentsForm() {
     const { child, id } = useParams()
+    const [appointment, setAppointment] = useState(blankAppointment)
+    const attendees = appointment.attendees.map((attendee) => {
+        <p>{attendee.username}: {attendee.status}</p>
+    })
+    function chooseForm(child, id = -1) {
+        if (child === "view") {
+            return <ViewAppointment id={id} appointment={appointment} attendees={attendees}/>
+        }
+        else if (child === "modify") {
+            return <ModifyAppointment id={id} appointment={appointment} attendees={attendees}/>
+        }
+        else {
+            return <CreateAppointment />
+        }
+    }
 
     return <div id="appointments-form">
         <p>appointments form</p>
