@@ -9,7 +9,7 @@ const blankForm = {
     attendeesString: ''
 }
 
-function CreateAppointment() {
+function CreateAppointment({ jsonifyAttendeesString }) {
     const [formData, setFormData] = useState(blankForm)
 
     const handleInputChange = (e) => {
