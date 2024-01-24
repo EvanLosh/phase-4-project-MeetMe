@@ -52,6 +52,15 @@ function AppointmentsForm() {
     const attendees = appointment.attendees.map((attendee) => {
         return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
     })
+    const submitAppointment = async (method) => {
+        const requestOptions = {
+            method: method.toUpperCase(),
+            headers: {
+                'Accept': 'application/json',
+                // Add any other headers needed
+            },
+            body: formData,
+        };
     function chooseForm(child, id = -1) {
         if (child === "view") {
             return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
