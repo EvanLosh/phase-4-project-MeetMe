@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 
 
 
-function ViewAppointment({ id, appointment, attendees }) {
+function ViewAppointment({ id, appointment, stringifyAttendeesJSON }) {
+
+    let attendees = stringifyAttendeesJSON(appointment.attendees)
+
 
     // function fetchAppointment(id) {
     //     const url = `http://127.0.0.1:5555/appointments/<int:${id}>`
@@ -27,8 +30,7 @@ function ViewAppointment({ id, appointment, attendees }) {
         <p>Location: {appointment.location}</p>
         <p>Status: {appointment.status}</p>
         <p>Description: {appointment.description}</p>
-        <p>Attendees:</p>
-        {attendees}
+        <p>Attendees: {attendees}</p>
     </div>;
 }
 

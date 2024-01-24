@@ -16,7 +16,7 @@ const blankUser = { username: '', id: -1 }
 
 function App() {
 
-  const [users, setUsers] = useState(blankUser)
+  const [users, setUsers] = useState([blankUser])
   const [theUser, setTheUser] = useState(blankUser)
 
   const router = createBrowserRouter([
@@ -24,7 +24,7 @@ function App() {
 
       path: "/",
       // Props to Home get passed here
-      element: <Home theUser={theUser} />,
+      element: <Home theUser={theUser} users={users} serverURL={serverURL} />,
       children: [
         {
           path: "",

@@ -46,17 +46,15 @@ function jsonifyAttendeesString(string) {
 }
 
 
-function AppointmentsForm() {
+function AppointmentsForm({ fetchAppointment, appointments }) {
     const formData = {}
     const { child, id } = useParams()
-    const [appointment, setAppointment] = useState(blankAppointment)
     // fetch the appointment by id from /appointments/<int:id> 
-
-    const attendees = appointment.attendees.map((attendee) => {
-        return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
-    })
-    const submitAppointment = async (method) => {
-         const requestOptions = {
+    // const attendees = appointment.attendees.map((attendee) => {
+    //     return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
+    // })
+    const submitAppointment = async (e, method) => {
+        const requestOptions = {
             method: method.toUpperCase(),
             headers: {
                 'Accept': 'application/json',
@@ -67,14 +65,18 @@ function AppointmentsForm() {
     }
 
     function chooseForm(child, id = -1) {
+        let appointment = appointments.filter((a) => { return a.id === id })[0]
+        if (!appointment) {
+            appointment = blankAppointment
+        }
         if (child === "view") {
-            return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
+            return <ViewAppointment appointment={appointment} stringifyAttendeesJSON={stringifyAttendeesJSON} />
         }
         else if (child === "modify") {
-            return <ModifyAppointment id={id} appointment={appointment} attendees={attendees} jsonifyAttendeesString={jsonifyAttendeesString} />
+            return <ModifyAppointment appointment={appointment} jsonifyAttendeesString={jsonifyAttendeesString} fetchAppointment={fetchAppointment} />
         }
         else {
-            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
+            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} fetchAppointment={fetchAppointment} />
         }
     }
     return (
@@ -86,9 +88,11 @@ function AppointmentsForm() {
                 <a href={"/modify/" + id}>Modify</a>
             </div>
             {chooseForm(child, id)}
+            {/*
             <button onClick={() => submitAppointment('post')}>Create Appointment</button>
             <button onClick={() => submitAppointment('patch')}>Update Appointment</button>
             <button onClick={() => submitAppointment('delete')}>Delete Appointment</button>
+            */}
         </div>
     );
 }
