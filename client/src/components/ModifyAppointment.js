@@ -35,9 +35,11 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             <label htmlFor="lname">Description:</label>
             <input type="text" id="lname" name="description" value={formData.description} onChange={handleInputChange}></input>
             <br></br>
+
             <p>Location: {appointment.location}</p>
             <p>Starts: {appointment.start}</p>
             <p>End: {appointment.end}</p>
+
             {/* Location, start, and end should not be modifiable
 
             <label for="lname">Location:</label>
@@ -51,12 +53,15 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             <br></br> 
             */}
 
+
             {/* Replace status input with multiple choice: Active/Canceled/Rescheduled 
+
 
             <label for="lname">Status:</label>
             <input type="text" id="lname" name="status" value={formData.status} onChange={handleInputChange}></input>
             <br></br>
             */}
+
 
             <p>Appointment status:</p>
             <input type="radio" id="active" name="status" value="Active" onChange={handleInputChange}></input>
@@ -69,17 +74,21 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
 
             {/* Replace attendingStatus input with multiple choice: Going/Not Going
 
+
             <label for="lname">attendingStatus:</label>
             <input type="text" id="lname" name="attendingStatus" value={formData.attendingStatus} onChange={handleInputChange}></input>
             <br></br>
             */}
 
             <p>Your status:</p>
+
             <input type="radio" id="going" name="attendingStatus" value="Going" onChange={handleInputChange}></input>
             <label htmlFor="going">Going</label>
             <input type="radio" id="not-going" name="attendingStatus" value="Not going" onChange={handleInputChange}></input>
             <label htmlFor="not-going">Not going</label>
+
             <br></br>
+
 
 
 
@@ -88,6 +97,7 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
 
 
             <label htmlFor="lname">Invite additional users (usernames separated by commas):</label>
+
             <input type="text" id="lname" name="additionalAttendees" value={formData.additionalAttendees} onChange={handleInputChange}></input>
             <br></br>
             <input type="submit" value="Update appointment"></input>
