@@ -22,6 +22,7 @@ const blankAppointment = {
 }
 
 function stringifyAttendeesJSON(list) {
+    // Convert a JSON list of attendees into a string of usernames
     let stringify = ''
     for (let i = 0; i < list.length; i++) {
         if (i === (list.length - 1)) {
@@ -35,6 +36,7 @@ function stringifyAttendeesJSON(list) {
 }
 
 function jsonifyAttendeesString(string) {
+    // Convert a string of usernames into a JSON list of attendees
     let attendees = []
     let stringList = string.split(", ")
     for (let i = 0; i < stringList.length; i++) {
@@ -45,9 +47,10 @@ function jsonifyAttendeesString(string) {
 
 
 function AppointmentsForm() {
+    const formData = {}
     const { child, id } = useParams()
     const [appointment, setAppointment] = useState(blankAppointment)
-    {/* fetch the appointment by id from /appointments/<int:id> */ }
+    // fetch the appointment by id from /appointments/<int:id> 
 
     const attendees = appointment.attendees.map((attendee) => {
         return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
@@ -61,6 +64,8 @@ function AppointmentsForm() {
             },
             body: formData,
         };
+    }
+
     function chooseForm(child, id = -1) {
         if (child === "view") {
             return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
@@ -71,7 +76,7 @@ function AppointmentsForm() {
         else {
             return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
         }
-    }}
+    }
     return (
         <div id="appointments-form">
             <p>appointments form</p>
