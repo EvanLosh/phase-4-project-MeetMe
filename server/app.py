@@ -26,7 +26,7 @@ migrate = Migrate(app, db)
 # Initialize the database with the app
 db.init_app(app)
 
--
+
 # Define a route for getting a restaurant by ID
 @app.route('/restaurants/<int:id>', methods=['GET'])
 def get_restaurant(id):
