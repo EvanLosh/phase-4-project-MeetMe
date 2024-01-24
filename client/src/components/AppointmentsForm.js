@@ -53,11 +53,11 @@ function AppointmentsForm() {
         return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
     })
     const submitAppointment = async (method) => {
-        const requestOptions = {
+         const requestOptions = {
             method: method.toUpperCase(),
             headers: {
                 'Accept': 'application/json',
-                // Add any other headers needed
+                // Add any other headers needed?
             },
             body: formData,
         };
