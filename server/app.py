@@ -1,26 +1,62 @@
-#!/usr/bin/env python3
-
-# Standard library imports
-from flask import Flask
-from flask_restful import Api
-
-# Local imports
-from models import db
-from calendarResource import CalendarResource
+from flask import Flask, request
+from flask_restful import Resource, Api
+from models import User, Appointment  # Assuming you have these models defined
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example.db'  # Use your actual database URI
-db.init_app(app)
+api = Api(app)
 
-api = Api(app)  # Initialize the api object
+class UserResource(Resource):
+    def get(self, id):
+        user = User.query.get(id)
+        return user.to_dict()
 
-# Add your model imports
-api.add_resource(CalendarResource, '/calendar/<int:user_id>')
+    def post(self):
+        user_data = request.get_json()
+        user = User(**user_data)
+        db.session.add(user)
+        db.session.commit()
+        return user.to_dict(), 201
 
-# Views go here!
-@app.route('/')
-def index():
-    return '<h1>Project Server</h1>'
+    def put(self, id):
+        user_data = request.get_json()
+        user = User.query.get(id)
+        user.update(**user_data)
+        db.session.commit()
+        return user.to_dict()
 
-if __name__ == '__main__':
+    def delete(self, id):
+        user = User.query.get(id)
+        db.session.delete(user)
+        db.session.commit()
+        return '', 204
+
+class AppointmentResource(Resource):
+    def get(self, id):
+        appointment = Appointment.query.get(id)
+        return appointment.to_dict()
+
+    def post(self):
+        appointment_data = request.get_json()
+        appointment = Appointment(**appointment_data)
+        db.session.add(appointment)
+        db.session.commit()
+        return appointment.to_dict(), 201
+
+    def put(self, id):
+        appointment_data = request.get_json()
+        appointment = Appointment.query.get(id)
+        appointment.update(**appointment_data)
+        db.session.commit()
+        return appointment.to_dict()
+
+    def delete(self, id):
+        appointment = Appointment.query.get(id)
+        db.session.delete(appointment)
+        db.session.commit()
+        return '', 204
+
+api.add_resource(UserResource, '/users/<int:id>')
+api.add_resource(AppointmentResource, '/appointments/<int:id>')
+
+if __name__ == "__main__":
     app.run(debug=True)
