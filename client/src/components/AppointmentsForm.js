@@ -52,6 +52,15 @@ function AppointmentsForm() {
     const attendees = appointment.attendees.map((attendee) => {
         return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
     })
+    const submitAppointment = async (method) => {
+        const requestOptions = {
+            method: method.toUpperCase(),
+            headers: {
+                'Accept': 'application/json',
+                // Add any other headers needed
+            },
+            body: formData,
+        };
     function chooseForm(child, id = -1) {
         if (child === "view") {
             return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
@@ -62,17 +71,22 @@ function AppointmentsForm() {
         else {
             return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
         }
-    }
-
-    return <div id="appointments-form">
-        <p>appointments form</p>
-        <div id="appointment-form-options">
-            <a href="/">Create</a>
-            <a href={"/view/" + id}>View</a>
-            <a href={"/modify/" + id}>Modify</a>
+    }}
+    return (
+        <div id="appointments-form">
+            <p>appointments form</p>
+            <div id="appointment-form-options">
+                <a href="/">Create</a>
+                <a href={"/view/" + id}>View</a>
+                <a href={"/modify/" + id}>Modify</a>
+            </div>
+            {chooseForm(child, id)}
+            <button onClick={() => submitAppointment('post')}>Create Appointment</button>
+            <button onClick={() => submitAppointment('patch')}>Update Appointment</button>
+            <button onClick={() => submitAppointment('delete')}>Delete Appointment</button>
         </div>
-        {chooseForm(child, id)}
-    </div>;
+    );
 }
 
 export default AppointmentsForm;
+

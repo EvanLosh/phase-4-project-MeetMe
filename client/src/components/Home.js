@@ -32,6 +32,10 @@ function Home() {
         setSelectedUser(user);
     };
 
+    const updateAppointments = (newAppointments) => {
+        setAppointments(newAppointments);
+    };
+
     return (
         <div id="home">
             <select onChange={handleUserChange}>
@@ -41,7 +45,7 @@ function Home() {
                 ))}
             </select>
             <RenderCalendar appointments={appointments} />
-            <AppointmentsForm />
+            <AppointmentsForm updateAppointments={updateAppointments} />
         </div>
     );
 }
