@@ -50,7 +50,7 @@ function AppointmentsForm() {
     {/* fetch the appointment by id from /appointments/<int:id> */ }
 
     const attendees = appointment.attendees.map((attendee) => {
-        return <p>{attendee.username}: {attendee.status}</p>
+        return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
     })
     function chooseForm(child, id = -1) {
         if (child === "view") {
