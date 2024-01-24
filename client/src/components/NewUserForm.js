@@ -1,33 +1,45 @@
-import React, { useEffect, useState } from "react";
-import "./NewUserForm.css"
-
-const blankForm = {
-    username: ''
-}
-
+import React from 'react';
+import { useFormik } from 'formik';
 
 function NewUserForm() {
-    const [formData, setFormData] = useState(blankForm)
+    const formik = useFormik({
+        initialValues: {
+            username: '',
+        },
+        onSubmit: values => {
+            fetch('http://127.0.0.1:5555/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        },
+    });
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target
-        setFormData({
-            ...formData,
-            [name]: value,
-        })
-    }
-
-    {/* on submit, post a new user to /users with formData.username. Update users state in App.js. */ }
-
-
-    return <div id="new-user-form">
-        <p>New user form</p>
-        <form>
-            <label for="fname">Username:</label>
-            <input type="text" id="fname" name="username" onChange={handleInputChange}></input>
-            <input type="submit" value="Submit"></input>
-        </form>
-    </div>;
+    return (
+        <div id="new-user-form">
+            <p>New user form</p>
+            <form onSubmit={formik.handleSubmit}>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                />
+                <input type="submit" value="Submit" />
+            </form>
+        </div>
+    );
 }
 
 export default NewUserForm;
