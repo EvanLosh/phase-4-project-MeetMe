@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useFormik } from 'formik';
 import CreateAppointment from "./CreateAppointment";
 import ViewAppointment from "./ViewAppointment";
 import ModifyAppointment from "./ModifyAppointment";
@@ -43,15 +44,31 @@ function jsonifyAttendeesString(string) {
     return attendees
 }
 
-
 function AppointmentsForm() {
     const { child, id } = useParams()
     const [appointment, setAppointment] = useState(blankAppointment)
-    {/* fetch the appointment by id from /appointments/<int:id> */ }
 
     const attendees = appointment.attendees.map((attendee) => {
         return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
     })
+
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            start: '',
+            end: '',
+            description: '',
+            owner: '',
+            location: '',
+            status: 'Active',
+            attendees: '',
+        },
+        onSubmit: values => {
+            values.attendees = jsonifyAttendeesString(values.attendees);
+            // handle submission
+        },
+    });
+
     function chooseForm(child, id = -1) {
         if (child === "view") {
             return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
