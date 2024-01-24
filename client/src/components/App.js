@@ -4,44 +4,58 @@ import Home from "./Home";
 import NewUserForm from "./NewUserForm"
 import "./App.css"
 import Header from "./Header";
-import CreateAppointment from "./CreateAppointment";
 import AppointmentsForm from "./AppointmentsForm";
-import ViewAppointment from "./ViewAppointment";
-import ModifyAppointment from "./ModifyAppointment";
 import Footer from "./Footer";
 
-const router = createBrowserRouter([
-  {
+const serverURL = "http://127.0.0.1:5555"
+const blankUser = { username: '', id: -1 }
 
-    path: "/",
-    // Props to Home get passed here
-    element: <Home />,
-    children:
-      [{
-        path: '',
-        element: (<AppointmentsForm child={<CreateAppointment />} />),
-      },
-      {
-        path: 'view/:appointmentId',
-        element: (<AppointmentsForm child={'view'} id={useParams.appointmentId} />),
-      },
-      {
-        /* modify appointment */
-      }
-      ]
-  },
-  {
-    path: "/new-user",
-    // Props to NewUserForm get passed here
-    element: <NewUserForm />
-  }
-])
+
 
 
 
 function App() {
+
+  const [users, setUsers] = useState(blankUser)
+  const [theUser, setTheUser] = useState(blankUser)
+
+  const router = createBrowserRouter([
+    {
+
+      path: "/",
+      // Props to Home get passed here
+      element: <Home theUser={theUser} />,
+      children: [
+        {
+          path: "",
+          element: (<AppointmentsForm />),
+        },
+        {
+          path: ":child/:id",
+          element: (<AppointmentsForm />),
+        }
+      ]
+    },
+    {
+      path: "/new-user",
+      // Props to NewUserForm get passed here
+      element: <NewUserForm />
+    }
+  ])
+
+  function fetchUsers() {
+    fetch(serverURL + "/users")
+      .then(r => r.json())
+      .then(r => setUsers(r))
+    // Which user is the current user? I have harcoded it to be the first user in the list.
+    setTheUser(users[0])
+  }
+  // useEffect(() => fetchUsers(), [])
+
+
+
   return <div id="app">
-    <Header />
+    <Header users={users} theUser={theUser} />
     <RouterProvider router={router} />
     <Footer />
   </div>;

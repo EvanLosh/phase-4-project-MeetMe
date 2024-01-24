@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import RenderCalendar from "./RenderCalendar";
+
 
 
 function ViewAppointment({ id }) {
     return <div id="view-appointment">
-        <p>View appointment</p>
+        <p>View appointment. id = {id}.</p>
+        {/* get the appointment from the server by id and show the details here */}
     </div>;
 }
 
