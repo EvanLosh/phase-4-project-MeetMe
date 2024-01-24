@@ -19,23 +19,23 @@ const blankAppointment = {
             status: ''
         }
     ]
-
 }
-
 
 
 function AppointmentsForm() {
     const { child, id } = useParams()
     const [appointment, setAppointment] = useState(blankAppointment)
+    {/* fetch the appointment by id from /appointments/<int:id> */ }
+
     const attendees = appointment.attendees.map((attendee) => {
-        <p>{attendee.username}: {attendee.status}</p>
+        return <p>{attendee.username}: {attendee.status}</p>
     })
     function chooseForm(child, id = -1) {
         if (child === "view") {
-            return <ViewAppointment id={id} appointment={appointment} attendees={attendees}/>
+            return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
         }
         else if (child === "modify") {
-            return <ModifyAppointment id={id} appointment={appointment} attendees={attendees}/>
+            return <ModifyAppointment id={id} appointment={appointment} attendees={attendees} />
         }
         else {
             return <CreateAppointment />

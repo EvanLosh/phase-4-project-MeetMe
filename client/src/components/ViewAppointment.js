@@ -14,14 +14,15 @@ function ViewAppointment({ id, appointment, attendees }) {
     // fetchAppointment(id)
 
 
-    {/* fetch the appointment by id from /appointments/<int:id> */ }
+
 
     return <div id="view-appointment">
         {/* get the appointment from the server by id and show the details here */}
         <p>View appointment. id = {id}.</p>
+        <p><a href={`/modify/${id}`}>Modify this appointment</a></p>
         <p>{appointment.title}</p>
         <p>Owner: {appointment.owner}</p>
-        <p>Begins: {appointment.start}</p>
+        <p>Starts: {appointment.start}</p>
         <p>Ends: {appointment.end}</p>
         <p>Location: {appointment.location}</p>
         <p>Status: {appointment.status}</p>
