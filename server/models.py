@@ -13,7 +13,8 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Varchar(20), nullable=False)
     
-    appointment = db.relationship('Attendance', backref='user')
+
+    appointments = db.relationship('Appointment', backref='owner', lazy=True)
     
     def __repr__(self):
         return f'User(id={self.id}, username={self.username})'
@@ -41,7 +42,9 @@ class Appointments(db.Model, SerializerMixin):
     description = db.Column(db.String, nullable=True)  # Removed (255)
     status = db.Column(db.String(50), nullable=False) 
     
-    user = db.relationship('Attendance', backref='appointment')
+    # user = db.relationship('Attendance', backref='appointment')
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    owner = db.relationship('User', backref='appointments', lazy=True)
     
     def __repr__(self):
         return f'Appointment(id={self.id}, owner_id={self.owner_id}, title={self.title}, location={self.location}, description={self.description})'
@@ -77,6 +80,11 @@ class Attendance(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Corrected ForeignKey
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)  # Corrected ForeignKey
     status = db.Column(db.String(50), nullable=False)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)
+
+    # user = db.relationship('User', backref='attendances', lazy=True)
     
     @validates('status')
     def validates_status(self,key,value):
