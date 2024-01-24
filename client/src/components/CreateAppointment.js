@@ -24,22 +24,22 @@ function CreateAppointment({ jsonifyAttendeesString }) {
         <p>Create appointment</p>
         {/* a form to post a new appointment to the db */}
         <form action="/action_page.php">
-            <label for="fname">Title:</label>
+            <label htmlFor="fname">Title:</label>
             <input type="text" id="fname" name="title" value={formData.title} onChange={handleInputChange}></input>
             <br></br>
-            <label for="lname">Description:</label>
+            <label htmlFor="lname">Description:</label>
             <input type="text" id="lname" name="description" value={formData.description} onChange={handleInputChange}></input>
             <br></br>
-            <label for="lname">Location:</label>
+            <label htmlFor="lname">Location:</label>
             <input type="text" id="lname" name="location" value={formData.location} onChange={handleInputChange}></input>
             <br></br>
-            <label for="lname">Datetime start:</label>
+            <label htmlFor="lname">Datetime start:</label>
             <input type="text" id="lname" name="start" value={formData.start} onChange={handleInputChange}></input>
             <br></br>
-            <label for="lname">Datetime end:</label>
+            <label htmlFor="lname">Datetime end:</label>
             <input type="text" id="lname" name="end" value={formData.end} onChange={handleInputChange}></input>
             <br></br>
-            <label for="lname">Invite users (usernames separated by commas):</label>
+            <label htmlFor="lname">Invite users (usernames separated by commas):</label>
             <input type="text" id="lname" name="attendees" value={formData.attendeesString} onChange={handleInputChange}></input>
             <br></br>
             <input type="submit" value="Create appointment"></input>
