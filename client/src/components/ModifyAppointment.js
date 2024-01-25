@@ -25,13 +25,13 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
                 },
                 body: JSON.stringify(values),
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         },
     });
 
@@ -69,4 +69,6 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             </form>
         </div>
     );
+}
 
+export default ModifyAppointment;
