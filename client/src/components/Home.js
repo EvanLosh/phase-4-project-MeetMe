@@ -5,26 +5,11 @@ import "./Home.css";
 
 function Home({ users, serverURL, theUser }) {
     const [appointments, setAppointments] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
+    let userAppointments = appointments.filter((a) => { return theUser.id in a.attendances.map((a) => { return a.user_id }) })
 
     function addAppointment(appointment) {
         setAppointments([...appointments, appointment]);
     }
-
-    // useEffect(() => {
-    //     if (selectedUser) {
-    //         fetch(`${serverURL}/appointments/${selectedUser.id}`)
-    //             .then(response => response.json())
-    //             .then(data => setAppointments(data))
-    //             .catch(error => console.error('Error:', error));
-    //     }
-    // }, [selectedUser, serverURL]);
-
-    const handleUserChange = (event) => {
-        const userId = event.target.value;
-        const user = users.find(user => user.id === userId);
-        setSelectedUser(user);
-    };
 
 
 
@@ -79,13 +64,7 @@ function Home({ users, serverURL, theUser }) {
 
     return (
         <div id="home">
-            <select onChange={handleUserChange}>
-                <option>Select a user</option>
-                {users.map(user => (
-                    <option key={user.id} value={user.id}>{user.name}</option>
-                ))}
-            </select>
-            <RenderCalendar appointments={appointments} />
+            <RenderCalendar userAppointments={userAppointments} />
             <AppointmentsForm
                 updateAppointments={updateAppointments}
                 appointments={appointments}

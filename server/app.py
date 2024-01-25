@@ -1,4 +1,3 @@
-
 from flask import Flask, request, make_response
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
@@ -9,13 +8,13 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app, resources={r'/*': {"origins": "*"}})
 # configure the database connection to the local file app.db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 
 # configure flag to disable modification tracking and use less memory
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-CORS(app)
 # create a Migrate object to manage schema modifications
 migrate = Migrate(app, db)
 
@@ -68,6 +67,7 @@ class AppointmentsResource(Resource):
         return appointments
 
     def post(self):
+        print(request)
         appointment_data = request.get_json()
         appointment = Appointment(**appointment_data)
         db.session.add(appointment)

@@ -27,7 +27,7 @@ function stringifyattendancesJSON(list) {
         if (i === (list.length - 1)) {
             stringify = stringify + list[i].user_id;
         } else {
-            stringify = stringify + list[i].user + ", ";
+            stringify = stringify + list[i].user_id + ", ";
         }
     }
     return stringify;
@@ -66,7 +66,6 @@ function AppointmentsForm({ appointments, serverURL, theUser }) {
 
     return (
         <div id="appointments-form">
-            <p>appointments form</p>
             <div id="appointment-form-options">
                 <a href="/">Create</a>
                 <a href={"/view/" + id}>View</a>

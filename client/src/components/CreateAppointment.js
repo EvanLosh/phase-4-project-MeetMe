@@ -1,19 +1,21 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const CreateAppointment = ({ jsonifyattendancesString, serverURL }) => {
+const CreateAppointment = ({ jsonifyattendancesString, serverURL, theUser }) => {
     const formik = useFormik({
         initialValues: {
             title: '',
             location: '',
             description: '',
             start_time: '',
-            end: '',
+            end_time: '',
             attendancesString: ''
         },
         onSubmit: values => {
-            values.owner_id = //current user id
+            values.owner_id = theUser.id
             values.attendances = jsonifyattendancesString(values.attendancesString);
+            console.log('Creating new appointment from form data:')
+            console.log(values)
             fetch(`${serverURL}/appointments`, {
                 method: 'POST',
                 headers: {
@@ -39,11 +41,11 @@ const CreateAppointment = ({ jsonifyattendancesString, serverURL }) => {
                 <label htmlFor="location">Location:</label>
                 <input type="text" id="location" name="location" value={formik.values.location} onChange={formik.handleChange} />
                 <br />
-                <label htmlFor="start">Datetime start:</label>
-                <input type="text" id="start" name="start" value={formik.values.start} onChange={formik.handleChange} />
+                <label htmlFor="start_time">Datetime start:</label>
+                <input type="text" id="start_time" name="start_time" value={formik.values.start_time} onChange={formik.handleChange} />
                 <br />
-                <label htmlFor="end">Datetime end:</label>
-                <input type="text" id="end" name="end" value={formik.values.end} onChange={formik.handleChange} />
+                <label htmlFor="end_time">Datetime end:</label>
+                <input type="text" id="end_time" name="end_time" value={formik.values.end_time} onChange={formik.handleChange} />
                 <br />
                 <label htmlFor="attendancesString">Invite users (usernames separated by commas):</label>
                 <input type="text" id="attendancesString" name="attendancesString" value={formik.values.attendancesString} onChange={formik.handleChange} />
