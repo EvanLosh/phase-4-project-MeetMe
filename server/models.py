@@ -8,12 +8,12 @@ db = SQLAlchemy()
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
-    serialize_rules = ('-appointment.user',)
+
    
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.VARCHAR(20), nullable=False)
     
-
+    serialize_rules = ('-appointments.owner', "-attendances.user")
     appointments = db.relationship('Appointment', backref='owner', lazy=True)
     
     def __repr__(self):
@@ -31,7 +31,8 @@ class User(db.Model, SerializerMixin):
         
 class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
-    serialize_rules = ('-user.appointment',)
+    serialize_rules = ('-owner.appointments', '-owner.attendances')
+
    
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Check on this
@@ -42,9 +43,6 @@ class Appointment(db.Model, SerializerMixin):
     description = db.Column(db.String, nullable=True)  
     status = db.Column(db.String(50), nullable=False) 
     
-    # user = db.relationship('Attendance', backref='appointment')
-    # owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    # owner = db.relationship('User', backref='appointments', lazy=True)
     
     def __repr__(self):
         return f'Appointment(id={self.id}, owner_id={self.owner_id}, title={self.title}, location={self.location}, description={self.description})'
@@ -76,17 +74,16 @@ class Attendance(db.Model, SerializerMixin):
     __tablename__ = 'attendances'  
 
     
-    serialize_rules = ('-user.appointment', '-appointment.user')
+    serialize_rules = ('-user.attendances', "-user.appointments")
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)  
     status = db.Column(db.String(50), nullable=False)
-    
-    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    # appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)
 
-    # user = db.relationship('User', backref='attendances', lazy=True)
+    user = db.relationship('User', backref="attendances", lazy=True)
+    # appointment = db.relationship('Appointment', backref="attendances", lazy=True)
+
     
     @validates('status')
     def validates_status(self,key,value):
