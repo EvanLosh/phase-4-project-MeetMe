@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
-from models import User, Appointment, db 
+from models import User, Appointment, Attendance, db 
 app = Flask(__name__)
 api = Api(app)
 # configure the database connection to the local file app.db
@@ -16,10 +16,10 @@ migrate = Migrate(app, db)
 # initialize the Flask application to use the database
 db.init_app(app)
 
-class UserResource(Resource):
-    def get(self, id):
-        user = User.query.get(id)
-        return user.to_dict()
+class UsersResource(Resource):
+    def get(self):
+        users = User.query.all()
+        return [user.to_dict() for user in users]
 
     def post(self):
         user_data = request.get_json()
@@ -27,6 +27,12 @@ class UserResource(Resource):
         db.session.add(user)
         db.session.commit()
         return user.to_dict(), 201
+
+
+class UserResource(Resource):
+    def get(self, id):
+        user = User.query.get(id)
+        return user.to_dict()
 
     def put(self, id):
         user_data = request.get_json()
@@ -49,14 +55,6 @@ class AppointmentResource(Resource):
         else:
             return {'error': 'Appointment not found'}, 404
 
-
-    def post(self):
-        appointment_data = request.get_json()
-        appointment = Appointment(**appointment_data)
-        db.session.add(appointment)
-        db.session.commit()
-        return appointment.to_dict(), 201
-
     def put(self, id):
         appointment_data = request.get_json()
         appointment = Appointment.query.get(id)
@@ -69,9 +67,27 @@ class AppointmentResource(Resource):
         db.session.delete(appointment)
         db.session.commit()
         return '', 204
+    
+class AppointmentsResource(Resource):
+    def get(self):
+        try:
+            appointments = [a.to_dict() for a in Appointment.query.all()]
+            return appointments
+        except:
+            return {'error': 'Appointment not found'}, 404
+
+
+    def post(self):
+        appointment_data = request.get_json()
+        appointment = Appointment(**appointment_data)
+        db.session.add(appointment)
+        db.session.commit()
+        return appointment.to_dict(), 201
 
 api.add_resource(UserResource, '/users/<int:id>')
+api.add_resource(UsersResource, '/users')
 api.add_resource(AppointmentResource, '/appointments/<int:id>')
+api.add_resource(AppointmentsResource, '/appointments')
 
 if __name__ == "__main__":
     app.run(debug=True)
