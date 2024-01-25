@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_restful import Resource, Api
 from models import User, Appointment, Attendance, db 
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 # configure flag to disable modification tracking and use less memory
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+CORS(app)
 # create a Migrate object to manage schema modifications
 migrate = Migrate(app, db)
 
