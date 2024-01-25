@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const CreateAppointment = ({ jsonifyAttendeesString }) => {
+const CreateAppointment = ({ jsonifyattendancesString }) => {
     const formik = useFormik({
         initialValues: {
             title: '',
@@ -9,10 +9,10 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
             description: '',
             start: '',
             end: '',
-            attendeesString: ''
+            attendancesString: ''
         },
         onSubmit: values => {
-            values.attendees = jsonifyAttendeesString(values.attendeesString);
+            values.attendances = jsonifyattendancesString(values.attendancesString);
             // handle submission
         },
     });
@@ -37,8 +37,8 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
                 <label htmlFor="end">Datetime end:</label>
                 <input type="text" id="end" name="end" value={formik.values.end} onChange={formik.handleChange} />
                 <br />
-                <label htmlFor="attendeesString">Invite users (usernames separated by commas):</label>
-                <input type="text" id="attendeesString" name="attendeesString" value={formik.values.attendeesString} onChange={formik.handleChange} />
+                <label htmlFor="attendancesString">Invite users (usernames separated by commas):</label>
+                <input type="text" id="attendancesString" name="attendancesString" value={formik.values.attendancesString} onChange={formik.handleChange} />
                 <br />
                 <input type="submit" value="Create appointment" />
             </form>

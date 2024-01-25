@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 
 
-function ModifyAppointment({ id, appointment, jsonifyAttendeesString, serverURL }) {
+function ModifyAppointment({ id, appointment, jsonifyattendancesString, serverURL }) {
 
 
 
@@ -12,16 +12,16 @@ function ModifyAppointment({ id, appointment, jsonifyAttendeesString, serverURL 
         description: appointment.description,
         start: appointment.start,
         end: appointment.end,
-        attendeesString: '',
+        attendancesString: '',
         status: appointment.status, // modifiable only if the user is the owner of the appointment
         attendingStatus: '',
-        additionalAttendees: ''
+        additionalattendances: ''
     }
 
     const formik = useFormik({
         initialValues: blankForm,
         onSubmit: values => {
-            values.attendees = jsonifyAttendeesString(values.additionalAttendees)
+            values.attendances = jsonifyattendancesString(values.additionalattendances)
             fetch(serverURL + `/appointments/${id}`, {  // Replace with our actual API endpoint
                 method: 'PUT',
                 headers: {
@@ -66,8 +66,8 @@ function ModifyAppointment({ id, appointment, jsonifyAttendeesString, serverURL 
                 <input type="radio" id="not-going" name="attendingStatus" value="Not going" onChange={formik.handleChange} />
                 <label htmlFor="not-going">Not going</label>
                 <br />
-                <label htmlFor="additionalAttendees">Invite additional users (usernames separated by commas):</label>
-                <input type="text" id="additionalAttendees" name="additionalAttendees" value={formik.values.additionalAttendees} onChange={formik.handleChange} />
+                <label htmlFor="additionalattendances">Invite additional users (usernames separated by commas):</label>
+                <input type="text" id="additionalattendances" name="additionalattendances" value={formik.values.additionalattendances} onChange={formik.handleChange} />
                 <br />
                 <input type="submit" value="Update appointment" />
             </form>

@@ -11,14 +11,14 @@ function Home({ users, serverURL, theUser }) {
         setAppointments([...appointments, appointment]);
     }
 
-    useEffect(() => {
-        if (selectedUser) {
-            fetch(`${serverURL}/appointments/${selectedUser.id}`)
-                .then(response => response.json())
-                .then(data => setAppointments(data))
-                .catch(error => console.error('Error:', error));
-        }
-    }, [selectedUser, serverURL]);
+    // useEffect(() => {
+    //     if (selectedUser) {
+    //         fetch(`${serverURL}/appointments/${selectedUser.id}`)
+    //             .then(response => response.json())
+    //             .then(data => setAppointments(data))
+    //             .catch(error => console.error('Error:', error));
+    //     }
+    // }, [selectedUser, serverURL]);
 
     const handleUserChange = (event) => {
         const userId = event.target.value;
@@ -27,10 +27,22 @@ function Home({ users, serverURL, theUser }) {
     };
 
 
-   
+
     const updateAppointments = (newAppointments) => {
         setAppointments(newAppointments);
     };
+
+    const getAppointment = () => {
+        fetch(`${serverURL}/appointments`)
+            .then(response => response.json())
+            .then((a) => {
+                setAppointments(a);
+                console.log(a)
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    useEffect(getAppointment, [])
 
     const fetchAppointment = (appointment) => {
         if ('id' in appointment) {
