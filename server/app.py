@@ -31,15 +31,22 @@ class UserResource(Resource):
     def put(self, id):
         user_data = request.get_json()
         user = User.query.get(id)
-        user.update(**user_data)
-        db.session.commit()
-        return user.to_dict()
+        if user:
+            user.update(**user_data)
+            db.session.commit()
+            return user.to_dict()
+        else:
+            return {'error': 'User not found'}, 404
+
 
     def delete(self, id):
         user = User.query.get(id)
-        db.session.delete(user)
-        db.session.commit()
-        return '', 204
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return '', 204
+        else:
+            return {'error': 'User not found'}, 404
 
 class AppointmentResource(Resource):
     def get(self, id):
@@ -60,15 +67,22 @@ class AppointmentResource(Resource):
     def put(self, id):
         appointment_data = request.get_json()
         appointment = Appointment.query.get(id)
-        appointment.update(**appointment_data)
-        db.session.commit()
-        return appointment.to_dict()
+        if appointment:
+            appointment.update(**appointment_data)
+            db.session.commit()
+            return appointment.to_dict()
+        else:
+            return {'error': 'Appointment not found'}, 404
 
     def delete(self, id):
         appointment = Appointment.query.get(id)
-        db.session.delete(appointment)
-        db.session.commit()
-        return '', 204
+        if appointment:
+            db.session.delete(appointment)
+            db.session.commit()
+            return '', 204
+        else:
+            return {'error': 'Appointment not found'}, 404
+
 
 api.add_resource(UserResource, '/users/<int:id>')
 api.add_resource(AppointmentResource, '/appointments/<int:id>')
