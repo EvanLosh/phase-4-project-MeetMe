@@ -78,7 +78,7 @@ class Attendance(db.Model, SerializerMixin):
     status = db.Column(db.String(50), nullable=False)
 
     user = db.relationship('User', backref="attendances", lazy=True)
-    # appointment = db.relationship('Appointment', backref="attendances", lazy=True)
+    appointment = db.relationship('Appointment', backref="attendances", lazy=True)
 
     @validates('status')
     def validates_status(self, key, value):
