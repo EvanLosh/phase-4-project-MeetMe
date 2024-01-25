@@ -4,7 +4,6 @@ from flask_restful import Resource, Api
 from models import User, Appointment, db 
 from flask_sqlalchemy import SQLAlchemy
 
-
 app = Flask(__name__)
 api = Api(app)
 # configure the database connection to the local file app.db
@@ -18,7 +17,6 @@ migrate = Migrate(app, db)
 
 # initialize the Flask application to use the database
 db.init_app(app)
-
 
 class UsersResource(Resource):
     def get(self):
@@ -59,7 +57,7 @@ class UserResource(Resource):
 
     def delete(self, id):
         user = User.query.get(id)
-                if user:
+        if user:
             db.session.delete(user)
             db.session.commit()
             return '', 204
@@ -72,14 +70,12 @@ class AppointmentsResource(Resource):
         appointments = [a.to_dict() for a in Appointment.query.all()]
         return appointments
 
-
     def post(self):
         appointment_data = request.get_json()
         appointment = Appointment(**appointment_data)
         db.session.add(appointment)
         db.session.commit()
         return appointment.to_dict(), 201
-
 
 class AppointmentResource(Resource):
     def get(self, id):
@@ -88,9 +84,6 @@ class AppointmentResource(Resource):
             return appointment.to_dict()
         else:
             return {'error': 'Appointment not found'}, 404
-
-
-
 
     def put(self, id):
         appointment_data = request.get_json()
