@@ -2,15 +2,15 @@ import React from 'react';
 import { useFormik } from 'formik';
 
 
-function ModifyAppointment({ id, appointment, jsonifyattendancesString, serverURL }) {
+function ModifyAppointment({ id, appointment, jsonifyattendancesString, stringifyAttendancesJSON, serverURL }) {
 
-
+    console.log(appointment)
 
     const blankForm = {
         title: appointment.title,
         location: appointment.location,
         description: appointment.description,
-        start: appointment.start,
+        start_time: appointment.start_time,
         end: appointment.end,
         attendancesString: '',
         status: appointment.status, // modifiable only if the user is the owner of the appointment
@@ -22,6 +22,7 @@ function ModifyAppointment({ id, appointment, jsonifyattendancesString, serverUR
         initialValues: blankForm,
         onSubmit: values => {
             values.attendances = jsonifyattendancesString(values.additionalattendances)
+            console.log(values)
             fetch(serverURL + `/appointments/${id}`, {  // Replace with our actual API endpoint
                 method: 'PUT',
                 headers: {
@@ -50,7 +51,7 @@ function ModifyAppointment({ id, appointment, jsonifyattendancesString, serverUR
                 <input type="text" id="description" name="description" value={formik.values.description} onChange={formik.handleChange} />
                 <br />
                 <p>Location: {appointment.location}</p>
-                <p>Starts: {appointment.start}</p>
+                <p>Starts: {appointment.start_time}</p>
                 <p>End: {appointment.end}</p>
                 <p>Appointment status:</p>
                 <input type="radio" id="active" name="status" value="Active" onChange={formik.handleChange} />
@@ -66,6 +67,7 @@ function ModifyAppointment({ id, appointment, jsonifyattendancesString, serverUR
                 <input type="radio" id="not-going" name="attendingStatus" value="Not going" onChange={formik.handleChange} />
                 <label htmlFor="not-going">Not going</label>
                 <br />
+                <p>Invited: {stringifyAttendancesJSON(appointment.attendances)}</p>
                 <label htmlFor="additionalattendances">Invite additional users (usernames separated by commas):</label>
                 <input type="text" id="additionalattendances" name="additionalattendances" value={formik.values.additionalattendances} onChange={formik.handleChange} />
                 <br />

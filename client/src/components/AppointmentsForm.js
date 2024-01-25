@@ -73,7 +73,7 @@ function AppointmentsForm({ appointments, serverURL }) {
                 <a href={"/modify/" + id}>Modify</a>
             </div>
             {child === "view" && <ViewAppointment id={id} appointment={appointment} stringifyattendancesJSON={stringifyattendancesJSON} />}
-            {child === "modify" && <ModifyAppointment id={id} appointment={appointment} jsonifyattendancesString={jsonifyattendancesString} />}
+            {child === "modify" && <ModifyAppointment id={id} appointment={appointment} jsonifyattendancesString={jsonifyattendancesString} stringifyAttendancesJSON={stringifyattendancesJSON} />}
             {child !== "view" && child !== "modify" && <CreateAppointment jsonifyattendancesString={jsonifyattendancesString} />}
             // <button onClick={() => submitAppointment('post')}>Create Appointment</button>
             // <button onClick={() => submitAppointment('patch')}>Update Appointment</button>

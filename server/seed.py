@@ -24,6 +24,7 @@ def generate_fake_user():
 def generate_fake_appointment(user_id):
     start_time = datetime.now() + timedelta(days=random.randint(1, 30))
     duration = random.randint(1, 4)
+    statuses = ['Active', 'Canceled', 'Rescheduled']
     
     return Appointment(
         owner_id=user_id,
@@ -32,7 +33,7 @@ def generate_fake_appointment(user_id):
         title=fake.text(max_nb_chars=50),  # Assuming title is a short text
         location=fake.address(),
         description=fake.text(),
-        status="Scheduled"  # Assuming status is a string
+        status=random.choice(statuses)
     )
 
 def generate_fake_attendance(user_id, appointment_id):
