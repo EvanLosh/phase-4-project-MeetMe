@@ -16,6 +16,7 @@ button.rbc-btn {
   overflow: visible;
   text-transform: none;
   -webkit-appearance: button;
+  appearance: button; /* Add this line */
   cursor: pointer;
 }
 
