@@ -45,26 +45,28 @@ function jsonifyAttendeesString(string) {
 
 
 
-function AppointmentsForm({ appointments, theUser, serverURL }) {
+function AppointmentsForm({ appointments, theUser, serverURL, addAppointment }) {
 
     const { child, id } = useParams()
-    const [appointment, setAppointment] = useState(blankAppointment)
+    // const [appointment, setAppointment] = useState(blankAppointment)
     // { fetch the appointment by id from /appointments/<int:id>  }
 
-    const attendees = appointment.attendees.map((attendee) => {
-        return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
-    })
-    const submitAppointment = async (method) => {
-         const requestOptions = {
-            method: method.toUpperCase(),
-            headers: {
-                'Accept': 'application/json',
-                // Add any other headers needed?
-            },
-            body: formData,
-        };
-    function chooseForm(child, id = -1) {
+    // const attendees = appointment.attendees.map((attendee) => {
+    //     return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
+    // })
 
+    // const submitAppointment = async (method) => {
+    //     const requestOptions = {
+    //         method: method.toUpperCase(),
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             // Add any other headers needed?
+    //         },
+    //         body: formData,
+    //     };
+    // }
+
+    function chooseForm(child, id = -1) {
 
         let appointment = appointments.filter((a) => { return a.id === id })[0]
         if (!appointment) {
@@ -72,14 +74,11 @@ function AppointmentsForm({ appointments, theUser, serverURL }) {
         }
         const userIsOwner = (theUser.id === appointment.owner_id)
 
-        // const attendees = appointment.attendees.map((attendee) => {
-        //     return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
-        // })
 
         // One of the following components gets rendered
 
         if (child === "view") {
-            return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
+            return <ViewAppointment id={id} appointment={appointment} stringifyAttendeesJSON={stringifyAttendeesJSON} />
         }
         else if (child === "modify") {
 
@@ -87,12 +86,10 @@ function AppointmentsForm({ appointments, theUser, serverURL }) {
 
         }
         else {
-            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
+            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} addAppointment={addAppointment} />
         }
 
     }
-
-
 
     return <div id="appointments-form">
         <div id="appointment-form-options">
@@ -101,7 +98,9 @@ function AppointmentsForm({ appointments, theUser, serverURL }) {
             <a href={"/modify/" + id}>Modify</a>
 
         </div>
-    );
+        {chooseForm(child, id)}
+    </div>
+
 }
 
 export default AppointmentsForm;
