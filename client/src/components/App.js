@@ -1,72 +1,76 @@
 import React, { useEffect, useState } from "react";
-import { createBrowserRouter, RouterProvider, Switch, Route, useParams } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./Home";
-import NewUserForm from "./NewUserForm"
-import "./App.css"
+import NewUserForm from "./NewUserForm";
+import "./App.css";
 import Header from "./Header";
 import AppointmentsForm from "./AppointmentsForm";
 import Footer from "./Footer";
 
-const serverURL = "http://127.0.0.1:5000"
-const blankUser = { username: '', id: -1 }
-
-
+const serverURL = "http://127.0.0.1:5000";
+const blankUser = { username: '', id: -1 };
 
 function App() {
+  const [users, setUsers] = useState([blankUser]);
+  const [theUser, setTheUser] = useState(blankUser);
 
-  const [users, setUsers] = useState([blankUser])
-  const [theUser, setTheUser] = useState(blankUser)
   function addUser(user) {
-    setUsers([...users, user])
+    setUsers([...users, user]);
   }
 
   const router = createBrowserRouter([
     {
-
       path: "/",
-      // Props to Home get passed here
       element: <Home theUser={theUser} users={users} serverURL={serverURL} />,
       children: [
         {
           path: "",
-          element: (<AppointmentsForm />),
+          element: <AppointmentsForm />,
         },
         {
           path: ":child/:id",
-          element: (<AppointmentsForm />),
-        }
-      ]
+          element: <AppointmentsForm />,
+        },
+      ],
     },
     {
       path: "/new-user",
-      // Props to NewUserForm get passed here
-      element: <NewUserForm users={users} addUser={addUser} />
-    }
-  ])
-
+      element: <NewUserForm users={users} addUser={addUser} />,
+    },
+  ]);
 
   function fetchUsers() {
     fetch(serverURL + "/users")
-      .then(r => r.json())
-      .then((r) => {
-        if (r.length !== 0) {
-          setUsers(r)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch: ' + response.status);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.length !== 0) {
+          setUsers(data);
+          setTheUser(data[0]); // Set the first user as the current user
         }
       })
-
-    // Which user is the current user? I have harcoded it to be the first user in the list.
-    setTheUser(users[0])
+      .catch((error) => {
+        console.error('Error fetching users:', error);
+      });
   }
-  useEffect(() => fetchUsers(), [])
-  useEffect(() => setTheUser(users[0]), [])
 
-  console.log(users)
+  useEffect(() => {
+    fetchUsers();
+  }, []); // Run once on component mount
 
-  return <div id="app">
-    <Header users={users} theUser={theUser} />
-    <RouterProvider router={router} />
-    <Footer />
-  </div>;
+  console.log(users);
+
+  return (
+    <div id="app">
+      <Header users={users} theUser={theUser} />
+      <RouterProvider router={router} />
+      <Footer />
+    </div>
+  );
 }
 
 export default App;
