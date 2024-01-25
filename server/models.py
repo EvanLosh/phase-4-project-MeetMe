@@ -4,7 +4,7 @@ from sqlalchemy.orm import validates
 
 db = SQLAlchemy()
 
-# Models go here!
+# Models 
 
 class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
@@ -39,7 +39,7 @@ class Appointments(db.Model, SerializerMixin):
     duration = db.Column(db.Varchar, nullable=False)
     title = db.Column(db.String(255), nullable=False)
     location = db.Column(db.Varchar, nullable=False)
-    description = db.Column(db.String, nullable=True)  # Removed (255)
+    description = db.Column(db.String, nullable=True)  
     status = db.Column(db.String(50), nullable=False) 
     
     # user = db.relationship('Attendance', backref='appointment')
@@ -60,7 +60,7 @@ class Appointments(db.Model, SerializerMixin):
 
     @validates('description')
     def validates_description(self, key, value):
-        if value is not None and len(value) > 255:  #  None before length validation
+        if value is not None and len(value) > 255:  
             raise ValueError("Description cannot exceed 255 characters")
         return value
      
@@ -77,8 +77,8 @@ class Attendance(db.Model, SerializerMixin):
     serialize_rules = ('-user.appointment', '-appointment.user')
     
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Corrected ForeignKey
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)  # Corrected ForeignKey
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  
+    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)  
     status = db.Column(db.String(50), nullable=False)
     
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
