@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
-from models import User, Appointment  
+from models import User, Appointment, db 
 app = Flask(__name__)
 api = Api(app)
 
