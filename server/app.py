@@ -44,7 +44,11 @@ class UserResource(Resource):
 class AppointmentResource(Resource):
     def get(self, id):
         appointment = Appointment.query.get(id)
-        return appointment.to_dict()
+        if appointment:
+            return appointment.to_dict()
+        else:
+            return {'error': 'Appointment not found'}, 404
+
 
     def post(self):
         appointment_data = request.get_json()
