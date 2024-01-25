@@ -84,6 +84,7 @@ class AppointmentResource(Resource):
 
     def put(self, id):
         appointment_data = request.get_json()
+        print(appointment_data)
         appointment = Appointment.query.get(id)
         if appointment:
             appointment.update(**appointment_data)
