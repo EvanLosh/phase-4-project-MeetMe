@@ -19,7 +19,10 @@ db.init_app(app)
 class UserResource(Resource):
     def get(self, id):
         user = User.query.get(id)
-        return user.to_dict()
+        if user:
+            return user.to_dict()
+        else:
+            return {'error': 'User not found'}, 404
 
     def post(self):
         user_data = request.get_json()
@@ -38,7 +41,6 @@ class UserResource(Resource):
         else:
             return {'error': 'User not found'}, 404
 
-
     def delete(self, id):
         user = User.query.get(id)
         if user:
@@ -55,7 +57,6 @@ class AppointmentResource(Resource):
             return appointment.to_dict()
         else:
             return {'error': 'Appointment not found'}, 404
-
 
     def post(self):
         appointment_data = request.get_json()
@@ -82,7 +83,6 @@ class AppointmentResource(Resource):
             return '', 204
         else:
             return {'error': 'Appointment not found'}, 404
-
 
 api.add_resource(UserResource, '/users/<int:id>')
 api.add_resource(AppointmentResource, '/appointments/<int:id>')
