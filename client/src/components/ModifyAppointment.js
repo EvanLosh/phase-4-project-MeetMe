@@ -6,12 +6,13 @@ const blankForm = {
     description: '',
     start: '',
     end: '',
-    status: '', // only if the user is the owner of the appointment
+    attendeesString: '',
+    status: '', // modifiable only if the user is the owner of the appointment
     attendingStatus: '',
     additionalAttendees: ''
 }
 
-function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString }) {
+function ModifyAppointment({ id, appointment, fetchAppointment, jsonifyAttendeesString }) {
     const [formData, setFormData] = useState(blankForm)
 
     const handleInputChange = (e) => {
@@ -22,10 +23,17 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
         })
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const appointment = { ...formData, attendees: jsonifyAttendeesString(formData.attendeesString) }
+        console.log(`creating appointment from form data: ${appointment}`)
+        fetchAppointment(appointment)
+    }
+
     return <div id="modify-appointment">
         <p>modify appointment. id = {id}.</p>
         {/* get the appointment from the server by id and patch it or delete it using form input */}
-        <form >
+        <form onSubmit={handleSubmit}>
             <label htmlFor="fname">Title:</label>
             <input type="text" id="fname" name="title" value={formData.title} onChange={handleInputChange}></input>
             <br></br>
@@ -37,7 +45,7 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             <p>Starts: {appointment.start}</p>
             <p>End: {appointment.end}</p>
 
-            {/* Location, start, and end should not be modifiable
+            {/* Location, start, and end should probably not be modifiable
 
             <label for="lname">Location:</label>
             <input type="text" id="lname" name="location" value={formData.location} onChange={handleInputChange}></input>
@@ -50,16 +58,6 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             <br></br> 
             */}
 
-
-            {/* Replace status input with multiple choice: Active/Canceled/Rescheduled 
-
-
-            <label for="lname">Status:</label>
-            <input type="text" id="lname" name="status" value={formData.status} onChange={handleInputChange}></input>
-            <br></br>
-            */}
-
-
             <p>Appointment status:</p>
             <input type="radio" id="active" name="status" value="Active" onChange={handleInputChange}></input>
             <label htmlFor="active">Active</label>
@@ -69,33 +67,15 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             <label htmlFor="rescheduled">Rescheduled</label>
             <br></br>
 
-            {/* Replace attendingStatus input with multiple choice: Going/Not Going
-
-
-            <label for="lname">attendingStatus:</label>
-            <input type="text" id="lname" name="attendingStatus" value={formData.attendingStatus} onChange={handleInputChange}></input>
-            <br></br>
-            */}
-
             <p>Your status:</p>
-
             <input type="radio" id="going" name="attendingStatus" value="Going" onChange={handleInputChange}></input>
             <label htmlFor="going">Going</label>
             <input type="radio" id="not-going" name="attendingStatus" value="Not going" onChange={handleInputChange}></input>
             <label htmlFor="not-going">Not going</label>
-
             <br></br>
 
-
-
-
-
-
-
-
             <label htmlFor="lname">Invite additional users (usernames separated by commas):</label>
-
-            <input type="text" id="lname" name="additionalAttendees" value={formData.additionalAttendees} onChange={handleInputChange}></input>
+            <input type="text" id="lname" name="attendeesString" value={formData.attendeesString} onChange={handleInputChange}></input>
             <br></br>
             <input type="submit" value="Update appointment"></input>
         </form>

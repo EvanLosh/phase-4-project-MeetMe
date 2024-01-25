@@ -12,8 +12,6 @@ const blankUser = { username: '', id: -1 }
 
 
 
-
-
 function App() {
 
   const [users, setUsers] = useState([blankUser])
@@ -46,11 +44,17 @@ function App() {
   function fetchUsers() {
     fetch(serverURL + "/users")
       .then(r => r.json())
-      .then(r => setUsers(r))
+      .then((r) => {
+        if (r.length !== 0) {
+          setUsers(r)
+        }
+      })
+
     // Which user is the current user? I have harcoded it to be the first user in the list.
     setTheUser(users[0])
   }
-  // useEffect(() => fetchUsers(), [])
+  useEffect(() => fetchUsers(), [])
+  useEffect(() => setTheUser(users[0]), [])
 
 
 

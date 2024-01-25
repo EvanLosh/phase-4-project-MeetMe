@@ -10,7 +10,7 @@ const blankForm = {
 }
 
 
-function CreateAppointment({ jsonifyAttendeesString, submitAppointment }) {
+function CreateAppointment({ jsonifyAttendeesString, fetchAppointment }) {
     const [formData, setFormData] = useState(blankForm)
 
     const handleInputChange = (e) => {
@@ -24,7 +24,8 @@ function CreateAppointment({ jsonifyAttendeesString, submitAppointment }) {
     const handleSubmit = (e) => {
         e.preventDefault()
         const appointment = { ...formData, attendees: jsonifyAttendeesString(formData.attendeesString) }
-        submitAppointment(appointment)
+        console.log(`creating appointment from form data: ${appointment}`)
+        fetchAppointment(appointment)
     }
 
     return <div id="create-appointment">
@@ -47,7 +48,7 @@ function CreateAppointment({ jsonifyAttendeesString, submitAppointment }) {
             <input type="text" id="lname" name="end" value={formData.end} onChange={handleInputChange}></input>
             <br></br>
             <label htmlFor="lname">Invite users (usernames separated by commas):</label>
-            <input type="text" id="lname" name="attendees" value={formData.attendeesString} onChange={handleInputChange}></input>
+            <input type="text" id="lname" name="attendeesString" value={formData.attendeesString} onChange={handleInputChange}></input>
             <br></br>
             <input type="submit" value="Create appointment" ></input>
         </form>
