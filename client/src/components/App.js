@@ -16,6 +16,9 @@ function App() {
 
   const [users, setUsers] = useState([blankUser])
   const [theUser, setTheUser] = useState(blankUser)
+  function addUser(user) {
+    setUsers([...users, user])
+  }
 
   const router = createBrowserRouter([
     {
@@ -37,9 +40,10 @@ function App() {
     {
       path: "/new-user",
       // Props to NewUserForm get passed here
-      element: <NewUserForm />
+      element: <NewUserForm users={users} addUser={addUser} />
     }
   ])
+
 
   function fetchUsers() {
     fetch(serverURL + "/users")
@@ -56,7 +60,7 @@ function App() {
   useEffect(() => fetchUsers(), [])
   useEffect(() => setTheUser(users[0]), [])
 
-
+  console.log(users)
 
   return <div id="app">
     <Header users={users} theUser={theUser} />

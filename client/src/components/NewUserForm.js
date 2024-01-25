@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-function NewUserForm() {
+function NewUserForm({ users, addUser }) {
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -14,13 +14,14 @@ function NewUserForm() {
                 },
                 body: JSON.stringify(values),
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    addUser(data)
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         },
     });
 

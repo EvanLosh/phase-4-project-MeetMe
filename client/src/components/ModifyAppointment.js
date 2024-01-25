@@ -1,24 +1,28 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const blankForm = {
-    title: '',
-    location: '',
-    description: '',
-    start: '',
-    end: '',
-    attendeesString: '',
-    status: '', // modifiable only if the user is the owner of the appointment
-    attendingStatus: '',
-    additionalAttendees: ''
-}
 
-function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString }) {
+function ModifyAppointment({ id, appointment, jsonifyAttendeesString, serverURL }) {
+
+
+
+    const blankForm = {
+        title: appointment.title,
+        location: appointment.location,
+        description: appointment.description,
+        start: appointment.start,
+        end: appointment.end,
+        attendeesString: '',
+        status: appointment.status, // modifiable only if the user is the owner of the appointment
+        attendingStatus: '',
+        additionalAttendees: ''
+    }
 
     const formik = useFormik({
         initialValues: blankForm,
         onSubmit: values => {
-            fetch(`http://localhost:5000/appointments/${id}`, {  // Replace with our actual API endpoint
+            values.attendees = jsonifyAttendeesString(values.additionalAttendees)
+            fetch(serverURL + `/appointments/${id}`, {  // Replace with our actual API endpoint
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

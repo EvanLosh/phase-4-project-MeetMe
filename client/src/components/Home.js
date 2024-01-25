@@ -3,7 +3,7 @@ import RenderCalendar from "./RenderCalendar";
 import AppointmentsForm from "./AppointmentsForm";
 import "./Home.css"
 
-function Home({ users, serverURL }) {
+function Home({ users, serverURL, theUser }) {
     const [appointments, setAppointments] = useState([]);
     // const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
@@ -68,6 +68,7 @@ function Home({ users, serverURL }) {
         }
     }
 
+
     return (
         <div id="home">
             <select onChange={handleUserChange}>
@@ -77,7 +78,7 @@ function Home({ users, serverURL }) {
                 ))}
             </select>
             <RenderCalendar appointments={appointments} />
-            <AppointmentsForm updateAppointments={updateAppointments} appointments={appointments} fetchAppointment={fetchAppointment} />
+            <AppointmentsForm updateAppointments={updateAppointments} appointments={appointments} fetchAppointment={fetchAppointment} theUser={theUser} serverURL={serverURL} />
         </div>
     );
 }

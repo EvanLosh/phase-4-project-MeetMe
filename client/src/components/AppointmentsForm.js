@@ -49,7 +49,7 @@ function jsonifyAttendeesString(string) {
 }
 
 
-function AppointmentsForm({ appointments }) {
+function AppointmentsForm({ appointments, theUser, serverURL }) {
     const { child, id } = useParams()
     // const [appointment, setAppointment] = useState(blankAppointment)
 
@@ -73,21 +73,23 @@ function AppointmentsForm({ appointments }) {
 
 
     function chooseForm(child, id = -1) {
+
         let appointment = appointments.filter((a) => { return a.id === id })[0]
         if (!appointment) {
             appointment = blankAppointment
         }
+        const userIsOwner = (theUser.id === appointment.owner_id)
 
-        const attendees = appointment.attendees.map((attendee) => {
-            return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
-        })
+        // const attendees = appointment.attendees.map((attendee) => {
+        //     return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
+        // })
 
         // One of the follow components gets rendered
         if (child === "view") {
             return <ViewAppointment appointment={appointment} stringifyAttendeesJSON={stringifyAttendeesJSON} />
         }
         else if (child === "modify") {
-            return <ModifyAppointment appointment={appointment} jsonifyAttendeesString={jsonifyAttendeesString} />
+            return <ModifyAppointment appointment={appointment} jsonifyAttendeesString={jsonifyAttendeesString} userIsOwner={userIsOwner} />
         }
         else {
             return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
