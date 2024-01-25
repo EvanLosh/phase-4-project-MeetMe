@@ -1,40 +1,31 @@
 import React, { useEffect, useState } from "react";
 import RenderCalendar from "./RenderCalendar";
 import AppointmentsForm from "./AppointmentsForm";
-import "./Home.css"
+import "./Home.css";
 
 function Home({ users, serverURL, theUser }) {
     const [appointments, setAppointments] = useState([]);
-    // const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
 
     function addAppointment(appointment) {
-        setAppointments([...appointments, appointment])
+        setAppointments([...appointments, appointment]);
     }
 
-    // Fetch users
-    // useEffect(() => {
-    //     fetch('http://localhost:5000/users')  // Replace with your actual API endpoint
-    //         .then(response => response.json())
-    //         .then(data => setUsers(data))
-    //         .catch(error => console.error('Error:', error));
-    // }, []);
-
-    // Fetch appointments when selectedUser changes
     useEffect(() => {
         if (selectedUser) {
-            fetch(`http://localhost:5000/appointments/${selectedUser.id}`)  // Replace with your actual API endpoint
+            fetch(`${serverURL}/appointments/${selectedUser.id}`)
                 .then(response => response.json())
                 .then(data => setAppointments(data))
                 .catch(error => console.error('Error:', error));
         }
-    }, [selectedUser]);
+    }, [selectedUser, serverURL]);
 
     const handleUserChange = (event) => {
         const userId = event.target.value;
         const user = users.find(user => user.id === userId);
         setSelectedUser(user);
     };
+
 
     const updateAppointments = (newAppointments) => {
         setAppointments(newAppointments);
