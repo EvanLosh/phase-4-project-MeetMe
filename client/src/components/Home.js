@@ -27,42 +27,43 @@ function Home({ users, serverURL, theUser }) {
     };
 
 
+   
     const updateAppointments = (newAppointments) => {
         setAppointments(newAppointments);
     };
 
-    function fetchAppointment(appointment) {
-        console.log(appointment)
+    const fetchAppointment = (appointment) => {
         if ('id' in appointment) {
-            fetch(serverURL + '/appointments', {
+            fetch(`${serverURL}/appointments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(appointment),
             })
-                .then(r => r.json)
-                .then((r) => {
-                    setAppointments(
-                        [...appointments, r]
-                    )
+                .then(response => response.json())
+                .then((newAppointment) => {
+                    addAppointment(newAppointment);
                 })
-        }
-        else {
-            fetch(serverURL + `/appointments/${appointment.id}`, {
+                .catch(error => console.error('Error:', error));
+        } else {
+            fetch(`${serverURL}/appointments/${appointment.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(appointment),
             })
-                .then(r => r.json)
-                .then(
-                // update the appointments state with the modified appointment
-            )
+                .then(response => response.json())
+                .then(updatedAppointment => {
+                    const updatedAppointments = appointments.map(app =>
+                        app.id === updatedAppointment.id ? updatedAppointment : app
+                    );
+                    updateAppointments(updatedAppointments);
+                })
+                .catch(error => console.error('Error:', error));
         }
-    }
-
+    };
 
     return (
         <div id="home">
@@ -73,7 +74,14 @@ function Home({ users, serverURL, theUser }) {
                 ))}
             </select>
             <RenderCalendar appointments={appointments} />
-            <AppointmentsForm updateAppointments={updateAppointments} appointments={appointments} fetchAppointment={fetchAppointment} theUser={theUser} serverURL={serverURL} addAppointment={addAppointment} />
+            <AppointmentsForm
+                updateAppointments={updateAppointments}
+                appointments={appointments}
+                fetchAppointment={fetchAppointment}
+                theUser={theUser}
+                serverURL={serverURL}
+                addAppointment={addAppointment}
+            />
         </div>
     );
 }
