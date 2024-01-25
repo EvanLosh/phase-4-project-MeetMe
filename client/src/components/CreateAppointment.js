@@ -17,6 +17,7 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
         },
     });
 
+
     return (
         <div id="create-appointment">
             <p>Create appointment</p>

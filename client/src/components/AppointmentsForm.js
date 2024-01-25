@@ -23,6 +23,7 @@ const blankAppointment = {
 }
 
 function stringifyAttendeesJSON(list) {
+    // Convert a JSON list of attendees into a string of usernames
     let stringify = ''
     for (let i = 0; i < list.length; i++) {
         if (i === (list.length - 1)) {
@@ -36,6 +37,7 @@ function stringifyAttendeesJSON(list) {
 }
 
 function jsonifyAttendeesString(string) {
+    // Convert a string of usernames into a JSON list of attendees
     let attendees = []
     let stringList = string.split(", ")
     for (let i = 0; i < stringList.length; i++) {
@@ -43,6 +45,7 @@ function jsonifyAttendeesString(string) {
     }
     return attendees
 }
+
 
 function AppointmentsForm() {
     const { child, id } = useParams()
@@ -69,17 +72,23 @@ function AppointmentsForm() {
         },
     });
 
+
     function chooseForm(child, id = -1) {
+        let appointment = appointments.filter((a) => { return a.id === id })[0]
+        if (!appointment) {
+            appointment = blankAppointment
+        }
         if (child === "view") {
-            return <ViewAppointment id={id} appointment={appointment} attendees={attendees} />
+            return <ViewAppointment appointment={appointment} stringifyAttendeesJSON={stringifyAttendeesJSON} />
         }
         else if (child === "modify") {
-            return <ModifyAppointment id={id} appointment={appointment} attendees={attendees} jsonifyAttendeesString={jsonifyAttendeesString} />
+            return <ModifyAppointment appointment={appointment} jsonifyAttendeesString={jsonifyAttendeesString} fetchAppointment={fetchAppointment} />
         }
         else {
-            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
+            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} fetchAppointment={fetchAppointment} />
         }
     }
+
 
     return <div id="appointments-form">
         <p>appointments form</p>
@@ -87,6 +96,7 @@ function AppointmentsForm() {
             <a href="/">Create</a>
             <a href={"/view/" + id}>View</a>
             <a href={"/modify/" + id}>Modify</a>
+
         </div>
         {chooseForm(child, id)}
     </div>;

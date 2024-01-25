@@ -3,18 +3,18 @@ import RenderCalendar from "./RenderCalendar";
 import AppointmentsForm from "./AppointmentsForm";
 import "./Home.css"
 
-function Home() {
+function Home({ users, serverURL }) {
     const [appointments, setAppointments] = useState([]);
-    const [users, setUsers] = useState([]);
+    // const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
 
     // Fetch users
-    useEffect(() => {
-        fetch('http://localhost:5000/users')  // Replace with your actual API endpoint
-            .then(response => response.json())
-            .then(data => setUsers(data))
-            .catch(error => console.error('Error:', error));
-    }, []);
+    // useEffect(() => {
+    //     fetch('http://localhost:5000/users')  // Replace with your actual API endpoint
+    //         .then(response => response.json())
+    //         .then(data => setUsers(data))
+    //         .catch(error => console.error('Error:', error));
+    // }, []);
 
     // Fetch appointments when selectedUser changes
     useEffect(() => {
@@ -36,6 +36,37 @@ function Home() {
         setAppointments(newAppointments);
     };
 
+    function fetchAppointment(appointment) {
+        if ('id' in appointment) {
+            fetch(serverURL + '/appointments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(appointment),
+            })
+                .then(r => r.json)
+                .then((r) => {
+                    setAppointments(
+                        [...appointments, r]
+                    )
+                })
+        }
+        else {
+            fetch(serverURL + `/appointments/${appointment.id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(appointment),
+            })
+                .then(r => r.json)
+                .then(
+                // update the appointments state with the modified appointment
+            )
+        }
+    }
+
     return (
         <div id="home">
             <select onChange={handleUserChange}>
@@ -45,7 +76,7 @@ function Home() {
                 ))}
             </select>
             <RenderCalendar appointments={appointments} />
-            <AppointmentsForm updateAppointments={updateAppointments} />
+            <AppointmentsForm updateAppointments={updateAppointments} appointments={appointments} fetchAppointment={fetchAppointment} />
         </div>
     );
 }

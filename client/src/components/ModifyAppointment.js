@@ -13,6 +13,7 @@ const blankForm = {
 }
 
 function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString }) {
+
     const formik = useFormik({
         initialValues: blankForm,
         onSubmit: values => {
@@ -67,6 +68,3 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             </form>
         </div>
     );
-}
-
-export default ModifyAppointment;
