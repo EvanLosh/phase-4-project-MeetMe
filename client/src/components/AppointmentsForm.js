@@ -21,7 +21,7 @@ const blankAppointment = {
     ]
 };
 
-function stringifyattendancesJSON(list) {
+function stringifyAttendancesJSON(list) {
     let stringify = '';
     for (let i = 0; i < list.length; i++) {
         if (i === (list.length - 1)) {
@@ -33,7 +33,7 @@ function stringifyattendancesJSON(list) {
     return stringify;
 }
 
-function jsonifyattendancesString(string) {
+function jsonifyAttendancesString(string) {
     let attendances = [];
     let stringList = string.split(", ");
     for (let i = 0; i < stringList.length; i++) {
@@ -45,13 +45,14 @@ function jsonifyattendancesString(string) {
 function AppointmentsForm({ appointments, serverURL }) {
     const { child, id } = useParams();
     const [appointment, setAppointment] = useState(blankAppointment);
+    
     useEffect(() => {
-        if ((id > 0)) {
+        if (id > 0) {
             fetch(`${serverURL}/appointments/${id}`)
                 .then(r => r.json())
                 .then(r => setAppointment(r))
         }
-    }, [])
+    }, [id])
 
     const submitAppointment = async (method) => {
         const requestOptions = {
@@ -61,7 +62,17 @@ function AppointmentsForm({ appointments, serverURL }) {
             },
             body: JSON.stringify(appointment),
         };
-        // Fetch logic here using requestOptions
+         fetch(`${serverURL}/appointments/${id}`, requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                // Handle the data as needed
+                console.log(`Appointment ${method.toUpperCase()} successful:`, data);
+                // You might want to update your state or perform additional actions
+            })
+            .catch(error => {
+                console.error(`Error ${method.toUpperCase()} appointment:`, error);
+                
+            });
     };
 
     return (
@@ -72,9 +83,9 @@ function AppointmentsForm({ appointments, serverURL }) {
                 <a href={"/view/" + id}>View</a>
                 <a href={"/modify/" + id}>Modify</a>
             </div>
-            {child === "view" && <ViewAppointment id={id} appointment={appointment} stringifyattendancesJSON={stringifyattendancesJSON} />}
-            {child === "modify" && <ModifyAppointment id={id} appointment={appointment} jsonifyattendancesString={jsonifyattendancesString} stringifyAttendancesJSON={stringifyattendancesJSON} />}
-            {child !== "view" && child !== "modify" && <CreateAppointment jsonifyattendancesString={jsonifyattendancesString} />}
+            {child === "view" && <ViewAppointment id={id} appointment={appointment} stringifyAttendancesJSON={stringifyAttendancesJSON} />}
+            {child === "modify" && <ModifyAppointment id={id} appointment={appointment} jsonifyAttendancesString={jsonifyAttendancesString} stringifyAttendancesJSON={stringifyAttendancesJSON} />}
+            {child !== "view" && child !== "modify" && <CreateAppointment jsonifyAttendancesString={jsonifyAttendancesString} />}
             // <button onClick={() => submitAppointment('post')}>Create Appointment</button>
             // <button onClick={() => submitAppointment('patch')}>Update Appointment</button>
             // <button onClick={() => submitAppointment('delete')}>Delete Appointment</button>
