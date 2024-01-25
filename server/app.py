@@ -84,9 +84,17 @@ class AppointmentsResource(Resource):
         appointment = Appointment(title = data['title'], location = data['location'], start_time = datetime.now(), end_time = datetime.now() , description = data['description'], owner_id = data['owner_id'], status = 'Active')
         db.session.add(appointment)
         db.session.commit()
-        attendances = [Attendance(appointment_id = appointment.id, user_id = appointment.owner_id, status = 'Going')]
-        for a in data['attendances']:
-            attendances.append(Attendance(appointment_id = appointment.id, user_id = a['user_id'], status = 'Uncomfirmed'))
+        owner_attends = Attendance(appointment_id = appointment.id, user_id = appointment.owner_id, status = 'Going')
+        db.session.add(owner_attends)
+        print(data['attendancesString'].split(', '))
+        invited_ids = [User.query.filter_by(username = s).first().id for s in data['attendancesString'].split(', ')]
+        print(invited_ids)
+        for i in invited_ids:
+            new = Attendance(appointment_id = appointment.id, user_id = i, status = 'Uncomfirmed')
+            db.session.add(new)
+        db.session.commit()
+        # for a in data['attendances']:
+        #     attendances.append(Attendance(appointment_id = appointment.id, user_id = a['user_id'], status = 'Uncomfirmed'))
         return appointment.to_dict(), 201
 
 class AppointmentResource(Resource):

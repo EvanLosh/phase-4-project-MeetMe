@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const CreateAppointment = ({ jsonifyAttendeesString }) => {
+const CreateAppointment = ({ jsonifyAttendeesString, serverURL, theUser, users }) => {
     const formik = useFormik({
         initialValues: {
             title: '',
@@ -9,12 +9,15 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
             description: '',
             start: '',
             end: '',
-            attendeesString: ''
+            attendancesString: ''
         },
         onSubmit: async (values) => {
-            values.attendees = jsonifyAttendeesString(values.attendeesString);
+            values.owner_id = theUser.id
+            // values.attendances = values.attendancesString.split(', ').map((s) => {
+            //     return { user_id: users.filter(u => u.username === s)[0].id }
+            // });
             // handle submission
-            const response = await fetch('http://localhost:5000/appointments', { 
+            const response = await fetch(`${serverURL}/appointments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -48,8 +51,8 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
                 <label htmlFor="end">Datetime end:</label>
                 <input type="text" id="end" name="end" value={formik.values.end} onChange={formik.handleChange} />
                 <br />
-                <label htmlFor="attendeesString">Invite users (usernames separated by commas):</label>
-                <input type="text" id="attendeesString" name="attendeesString" value={formik.values.attendeesString} onChange={formik.handleChange} />
+                <label htmlFor="attendancesString">Invite users (usernames separated by commas):</label>
+                <input type="text" id="attendancesString" name="attendancesString" value={formik.values.attendancesString} onChange={formik.handleChange} />
                 <br />
                 <input type="submit" value="Create appointment" />
             </form>
