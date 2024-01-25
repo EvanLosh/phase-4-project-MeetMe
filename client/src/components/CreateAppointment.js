@@ -20,7 +20,7 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
 
     return (
         <div id="create-appointment">
-            <p>Create appointment</p>
+            <p>Create a new appointment</p>
             <form onSubmit={formik.handleSubmit}>
                 <label htmlFor="title">Title:</label>
                 <input type="text" id="title" name="title" value={formik.values.title} onChange={formik.handleChange} />
