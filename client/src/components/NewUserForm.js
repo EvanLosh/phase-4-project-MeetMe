@@ -17,8 +17,8 @@ function NewUserForm({ addUser }) {
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
-                    addUser(data); // Assuming this function updates the list of users in parent component
-                    formik.resetForm(); // Reset the form after successful submission
+                    addUser(data); 
+                    formik.resetForm(); // Reset the form after submit
                 })
                 .catch((error) => {
                     console.error('Error:', error);
