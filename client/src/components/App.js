@@ -7,7 +7,7 @@ import Header from "./Header";
 import AppointmentsForm from "./AppointmentsForm";
 import Footer from "./Footer";
 
-const serverURL = "http://127.0.0.1:5555"
+const serverURL = "http://127.0.0.1:5000"
 const blankUser = { username: '', id: -1 }
 
 

@@ -11,7 +11,7 @@ class User(db.Model, SerializerMixin):
     serialize_rules = ('-appointment.user',)
    
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.Varchar(20), nullable=False)
+    username = db.Column(db.VARCHAR(20), nullable=False)
     
 
     appointments = db.relationship('Appointment', backref='owner', lazy=True)
@@ -36,15 +36,15 @@ class Appointment(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Check on this
     start_time = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.Varchar, nullable=False)
+    duration = db.Column(db.VARCHAR, nullable=False)
     title = db.Column(db.String(255), nullable=False)
-    location = db.Column(db.Varchar, nullable=False)
+    location = db.Column(db.VARCHAR, nullable=False)
     description = db.Column(db.String, nullable=True)  
     status = db.Column(db.String(50), nullable=False) 
     
     # user = db.relationship('Attendance', backref='appointment')
-    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    owner = db.relationship('User', backref='appointments', lazy=True)
+    # owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # owner = db.relationship('User', backref='appointments', lazy=True)
     
     def __repr__(self):
         return f'Appointment(id={self.id}, owner_id={self.owner_id}, title={self.title}, location={self.location}, description={self.description})'
@@ -74,6 +74,8 @@ class Appointment(db.Model, SerializerMixin):
 
 class Attendance(db.Model, SerializerMixin):
     __tablename__ = 'attendances'  
+
+    
     serialize_rules = ('-user.appointment', '-appointment.user')
     
     id = db.Column(db.Integer, primary_key=True)
@@ -81,8 +83,8 @@ class Attendance(db.Model, SerializerMixin):
     appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)  
     status = db.Column(db.String(50), nullable=False)
     
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)
+    # user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    # appointment_id = db.Column(db.Integer, db.ForeignKey('appointments.id'), nullable=False)
 
     # user = db.relationship('User', backref='attendances', lazy=True)
     
