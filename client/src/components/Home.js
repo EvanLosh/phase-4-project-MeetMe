@@ -37,6 +37,7 @@ function Home({ users, serverURL }) {
     };
 
     function fetchAppointment(appointment) {
+        console.log(appointment)
         if ('id' in appointment) {
             fetch(serverURL + '/appointments', {
                 method: 'POST',

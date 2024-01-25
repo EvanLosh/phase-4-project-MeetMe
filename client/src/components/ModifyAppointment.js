@@ -7,7 +7,8 @@ const blankForm = {
     description: '',
     start: '',
     end: '',
-    status: '', // only if the user is the owner of the appointment
+    attendeesString: '',
+    status: '', // modifiable only if the user is the owner of the appointment
     attendingStatus: '',
     additionalAttendees: ''
 }
@@ -68,3 +69,4 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             </form>
         </div>
     );
+

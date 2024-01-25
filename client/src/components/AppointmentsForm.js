@@ -39,7 +39,9 @@ function stringifyAttendeesJSON(list) {
 function jsonifyAttendeesString(string) {
     // Convert a string of usernames into a JSON list of attendees
     let attendees = []
+    // if (string.length > 0) {
     let stringList = string.split(", ")
+    // }
     for (let i = 0; i < stringList.length; i++) {
         attendees.push({ username: stringList[i], status: 'Uncomfirmed' })
     }
@@ -73,6 +75,7 @@ function AppointmentsForm() {
     });
 
 
+
     function chooseForm(child, id = -1) {
         let appointment = appointments.filter((a) => { return a.id === id })[0]
         if (!appointment) {
@@ -90,13 +93,13 @@ function AppointmentsForm() {
     }
 
 
+
     return <div id="appointments-form">
         <p>appointments form</p>
         <div id="appointment-form-options">
             <a href="/">Create</a>
             <a href={"/view/" + id}>View</a>
             <a href={"/modify/" + id}>Modify</a>
-
         </div>
         {chooseForm(child, id)}
     </div>;

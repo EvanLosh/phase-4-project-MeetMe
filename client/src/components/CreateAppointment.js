@@ -18,6 +18,9 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
     });
 
 
+
+function CreateAppointment({ jsonifyAttendeesString, fetchAppointment }) {
+
     return (
         <div id="create-appointment">
             <p>Create appointment</p>
@@ -45,5 +48,6 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
         </div>
     );
 };
+
 
 export default CreateAppointment;
