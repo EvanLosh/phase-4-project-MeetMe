@@ -10,7 +10,7 @@ class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), nullable=False)
-    appointments = db.relationship('Appointment', backref='owner', lazy=True)
+    #appointments = db.relationship('Appointment', backref='owner', lazy=True)
 
     def __repr__(self):
         return f'User(id={self.id}, username={self.username})'

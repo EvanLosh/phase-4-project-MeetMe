@@ -2,6 +2,9 @@ from flask import Flask, request
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
 from models import User, Appointment, db 
+from flask_sqlalchemy import SQLAlchemy
+
+
 app = Flask(__name__)
 api = Api(app)
 # configure the database connection to the local file app.db
