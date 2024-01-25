@@ -4,7 +4,6 @@
 from datetime import datetime, timedelta
 import random
 import math
-
 # Remote library imports
 from faker import Faker
 
