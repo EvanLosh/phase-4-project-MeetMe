@@ -5,7 +5,6 @@ from flask_restful import Resource, Api
 from models import User, Appointment, Attendance, db 
 from flask_sqlalchemy import SQLAlchemy
 
-
 app = Flask(__name__)
 api = Api(app)
 # configure the database connection to the local file app.db
@@ -19,7 +18,6 @@ migrate = Migrate(app, db)
 
 # initialize the Flask application to use the database
 db.init_app(app)
-
 
 class UsersResource(Resource):
     def get(self):
