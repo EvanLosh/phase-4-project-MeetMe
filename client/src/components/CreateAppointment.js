@@ -23,8 +23,13 @@ const CreateAppointment = ({ jsonifyAttendancesString, serverURL, theUser, users
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(values),
+                body: JSON.stringify(values)
             })
+                .then(r => r.json())
+                .then((r) => {
+                    console.log(r)
+                    formik.resetForm(); // Reset the form after submit
+                })
 
         },
     });

@@ -1,13 +1,13 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-function NewUserForm({ addUser }) {
+function NewUserForm({ addUser, serverURL }) {
     const formik = useFormik({
         initialValues: {
             username: '',
         },
         onSubmit: values => {
-            fetch('http://127.0.0.1:5555/users', {
+            fetch(`${serverURL}/users`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -17,7 +17,7 @@ function NewUserForm({ addUser }) {
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
-                    addUser(data); 
+                    addUser(data);
                     formik.resetForm(); // Reset the form after submit
                 })
                 .catch((error) => {
