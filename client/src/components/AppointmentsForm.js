@@ -75,9 +75,9 @@ function AppointmentsForm({ appointments, serverURL }) {
             {child === "view" && <ViewAppointment id={id} appointment={appointment} stringifyattendancesJSON={stringifyattendancesJSON} />}
             {child === "modify" && <ModifyAppointment id={id} appointment={appointment} jsonifyattendancesString={jsonifyattendancesString} />}
             {child !== "view" && child !== "modify" && <CreateAppointment jsonifyattendancesString={jsonifyattendancesString} />}
-            <button onClick={() => submitAppointment('post')}>Create Appointment</button>
-            <button onClick={() => submitAppointment('patch')}>Update Appointment</button>
-            <button onClick={() => submitAppointment('delete')}>Delete Appointment</button>
+            // <button onClick={() => submitAppointment('post')}>Create Appointment</button>
+            // <button onClick={() => submitAppointment('patch')}>Update Appointment</button>
+            // <button onClick={() => submitAppointment('delete')}>Delete Appointment</button>
         </div>
     );
 }
