@@ -29,7 +29,7 @@ class User(db.Model, SerializerMixin):
         return value
         
         
-class Appointments(db.Model, SerializerMixin):
+class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
     serialize_rules = ('-user.appointment',)
    
