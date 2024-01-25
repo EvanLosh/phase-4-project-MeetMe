@@ -1,8 +1,10 @@
-from flask import Flask, request
+
+from flask import Flask, request, make_response
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
-from models import User, Appointment, db 
+from models import User, Appointment, Attendance, db 
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -20,7 +22,10 @@ db.init_app(app)
 
 class UsersResource(Resource):
     def get(self):
-        users = [u.to_dict() for u in User.query.all()]
+        users = [u.to_dict() for u in User.query.all()] # error: User object has no attribute to_dict()
+        # users_response = make_response({
+        #     users
+        # }, 200)
         return users
 
     def post(self):
@@ -33,17 +38,7 @@ class UsersResource(Resource):
 class UserResource(Resource):
     def get(self, id):
         user = User.query.get(id)
-        if user:
-            return user.to_dict()
-        else:
-            return {'error': 'User not found'}, 404
-
-    def post(self):
-        user_data = request.get_json()
-        user = User(**user_data)
-        db.session.add(user)
-        db.session.commit()
-        return user.to_dict(), 201
+        return user.to_dict()
 
     def put(self, id):
         user_data = request.get_json()
@@ -104,10 +99,11 @@ class AppointmentResource(Resource):
         else:
             return {'error': 'Appointment not found'}, 404
 
+
 api.add_resource(UsersResource, '/users')
 api.add_resource(UserResource, '/users/<int:id>')
-api.add_resource(AppointmentsResource, '/appointments')
 api.add_resource(AppointmentResource, '/appointments/<int:id>')
+api.add_resource(AppointmentsResource, '/appointments')
 
 if __name__ == "__main__":
     app.run(debug=True)

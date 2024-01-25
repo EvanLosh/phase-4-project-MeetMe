@@ -6,13 +6,13 @@ db = SQLAlchemy()
 
 # Models 
 
-class User(db.Model):
+class User(db.Model, SerializerMixin):
     __tablename__ = 'users'
    
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.VARCHAR(20), nullable=False)
     
-    serialize_rules = ('-appointments.owner', "-attendances.user")
+    serialize_rules = ('-appointments.owner', "-attendances.user", '-appointments.attendances', '-attendances.appointment')
     appointments = db.relationship('Appointment', backref='owner', lazy=True)
     
     def __repr__(self):
@@ -26,10 +26,10 @@ class User(db.Model):
             raise ValueError('Username cannot exceed 20 characters')
         return value
 
-class Appointment(db.Model):
+class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
 
-    serialize_rules = ('-owner.appointments', '-owner.attendances')
+    serialize_rules = ('-owner.appointments', '-attendances.appointment', '-owner.attendances', '-attendances.user')
 
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -70,7 +70,7 @@ class Appointment(db.Model):
 class Attendance(db.Model, SerializerMixin):
     __tablename__ = 'attendances'  
 
-    serialize_rules = ('-user.attendances', "-user.appointments")
+    serialize_rules = ('-user.attendances', "-appointment.attendances", )
     
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -78,7 +78,7 @@ class Attendance(db.Model, SerializerMixin):
     status = db.Column(db.String(50), nullable=False)
 
     user = db.relationship('User', backref="attendances", lazy=True)
-    # appointment = db.relationship('Appointment', backref="attendances", lazy=True)
+    appointment = db.relationship('Appointment', backref="attendances", lazy=True)
 
     @validates('status')
     def validates_status(self, key, value):
