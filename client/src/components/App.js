@@ -41,32 +41,25 @@ function App() {
 
   function fetchUsers() {
     fetch(serverURL + "/users")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch: ' + response.status);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.length !== 0) {
-          setUsers(data);
-          setTheUser(data[0]); // Set the first user as the current user
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching users:', error);
-      });
+      .then(r => r.json())
+      .then(r => setUsers(r))
+    setTheUser(users[0])
   }
 
-  useEffect(() => {
-    fetchUsers();
-  }, []); // Run once on component mount
+  const handleUserChange = (selectedUserId) => {
+    const selectedUser = users.find(user => user.id === parseInt(selectedUserId));
+    if (selectedUser) {
+      setTheUser(selectedUser);
+    }
+  }
+
+  useEffect(fetchUsers, []); // Run once on component mount
 
   console.log(users);
 
   return (
     <div id="app">
-      <Header users={users} theUser={theUser} />
+      <Header users={users} theUser={theUser} onUserChange={handleUserChange} />
       <RouterProvider router={router} />
       <Footer />
     </div>

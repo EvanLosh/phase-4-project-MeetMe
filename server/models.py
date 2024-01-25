@@ -34,7 +34,7 @@ class Appointment(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     start_time = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.String(20), nullable=False)
+    end_time = db.Column(db.DateTime, nullable=False)
     title = db.Column(db.String(255), nullable=False)
 
     location = db.Column(db.VARCHAR, nullable=False)
