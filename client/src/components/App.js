@@ -10,20 +10,13 @@ import Footer from "./Footer";
 const serverURL = "http://127.0.0.1:5555"
 const blankUser = { username: '', id: -1 }
 
-
-
-
-
 function App() {
-
   const [users, setUsers] = useState([blankUser])
   const [theUser, setTheUser] = useState(blankUser)
 
   const router = createBrowserRouter([
     {
-
       path: "/",
-      // Props to Home get passed here
       element: <Home theUser={theUser} users={users} serverURL={serverURL} />,
       children: [
         {
@@ -38,7 +31,6 @@ function App() {
     },
     {
       path: "/new-user",
-      // Props to NewUserForm get passed here
       element: <NewUserForm />
     }
   ])
@@ -47,15 +39,20 @@ function App() {
     fetch(serverURL + "/users")
       .then(r => r.json())
       .then(r => setUsers(r))
-    // Which user is the current user? I have harcoded it to be the first user in the list.
     setTheUser(users[0])
   }
-  // useEffect(() => fetchUsers(), [])
 
+  const handleUserChange = (selectedUserId) => {
+    const selectedUser = users.find(user => user.id === parseInt(selectedUserId));
+    if (selectedUser) {
+      setTheUser(selectedUser);
+    }
+  }
 
+  useEffect(() => fetchUsers(), [])
 
   return <div id="app">
-    <Header users={users} theUser={theUser} />
+    <Header users={users} theUser={theUser} onUserChange={handleUserChange} />
     <RouterProvider router={router} />
     <Footer />
   </div>;
