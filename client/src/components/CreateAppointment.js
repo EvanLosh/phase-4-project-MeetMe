@@ -1,34 +1,43 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const CreateAppointment = ({ jsonifyAttendeesString, serverURL, theUser, users }) => {
+const CreateAppointment = ({ jsonifyAttendeesString, serverURL, theUser, users, addAppointment }) => {
     const formik = useFormik({
         initialValues: {
             title: '',
             location: '',
             description: '',
-            start: '',
-            end: '',
+            startYYYY: '2024',
+            startMM: '1',
+            startDD: '',
+            starthr: '',
+            startmin: '0',
+            endYYYY: '2024',
+            endMM: '1',
+            endDD: '',
+            endhr: '',
+            endmin: '0',
             attendancesString: ''
         },
         onSubmit: async (values) => {
             values.owner_id = theUser.id
-            // values.attendances = values.attendancesString.split(', ').map((s) => {
-            //     return { user_id: users.filter(u => u.username === s)[0].id }
-            // });
-            // handle submission
-            const response = await fetch(`${serverURL}/appointments`, {
+            fetch(`${serverURL}/appointments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(values)
-            });
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            console.log(data); // log the response data
+            })
+                .then((r) => {
+                    if (!r.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return r.json()
+                })
+                .then((r) => {
+                    addAppointment(r)
+                    console.log(r); // log the response data
+                })
         },
     });
 
