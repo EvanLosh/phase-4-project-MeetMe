@@ -49,13 +49,9 @@ function jsonifyAttendeesString(string) {
 }
 
 
-function AppointmentsForm() {
+function AppointmentsForm({ appointments }) {
     const { child, id } = useParams()
-    const [appointment, setAppointment] = useState(blankAppointment)
-
-    const attendees = appointment.attendees.map((attendee) => {
-        return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
-    })
+    // const [appointment, setAppointment] = useState(blankAppointment)
 
     const formik = useFormik({
         initialValues: {
@@ -81,14 +77,20 @@ function AppointmentsForm() {
         if (!appointment) {
             appointment = blankAppointment
         }
+
+        const attendees = appointment.attendees.map((attendee) => {
+            return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
+        })
+
+        // One of the follow components gets rendered
         if (child === "view") {
             return <ViewAppointment appointment={appointment} stringifyAttendeesJSON={stringifyAttendeesJSON} />
         }
         else if (child === "modify") {
-            return <ModifyAppointment appointment={appointment} jsonifyAttendeesString={jsonifyAttendeesString} fetchAppointment={fetchAppointment} />
+            return <ModifyAppointment appointment={appointment} jsonifyAttendeesString={jsonifyAttendeesString} />
         }
         else {
-            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} fetchAppointment={fetchAppointment} />
+            return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />
         }
     }
 
