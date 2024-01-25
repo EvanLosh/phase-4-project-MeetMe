@@ -20,15 +20,12 @@ function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString 
             ...formData,
             [name]: value,
         })
-        if ((name === "status") || (name === "attendingStatus")) {
-            console.log(name, ": ", value)
-        }
     }
 
     return <div id="modify-appointment">
         <p>modify appointment. id = {id}.</p>
         {/* get the appointment from the server by id and patch it or delete it using form input */}
-        <form action="/action_page.php">
+        <form >
             <label htmlFor="fname">Title:</label>
             <input type="text" id="fname" name="title" value={formData.title} onChange={handleInputChange}></input>
             <br></br>

@@ -9,7 +9,8 @@ const blankForm = {
     attendeesString: ''
 }
 
-function CreateAppointment({ jsonifyAttendeesString }) {
+
+function CreateAppointment({ jsonifyAttendeesString, submitAppointment }) {
     const [formData, setFormData] = useState(blankForm)
 
     const handleInputChange = (e) => {
@@ -20,10 +21,16 @@ function CreateAppointment({ jsonifyAttendeesString }) {
         })
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const appointment = { ...formData, attendees: jsonifyAttendeesString(formData.attendeesString) }
+        submitAppointment(appointment)
+    }
+
     return <div id="create-appointment">
         <p>Create appointment</p>
         {/* a form to post a new appointment to the db */}
-        <form action="/action_page.php">
+        <form onSubmit={handleSubmit}>
             <label htmlFor="fname">Title:</label>
             <input type="text" id="fname" name="title" value={formData.title} onChange={handleInputChange}></input>
             <br></br>
@@ -42,7 +49,7 @@ function CreateAppointment({ jsonifyAttendeesString }) {
             <label htmlFor="lname">Invite users (usernames separated by commas):</label>
             <input type="text" id="lname" name="attendees" value={formData.attendeesString} onChange={handleInputChange}></input>
             <br></br>
-            <input type="submit" value="Create appointment"></input>
+            <input type="submit" value="Create appointment" ></input>
         </form>
     </div>;
 }
