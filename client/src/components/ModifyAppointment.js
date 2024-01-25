@@ -2,9 +2,11 @@ import React from 'react';
 import { useFormik } from 'formik';
 
 
-function ModifyAppointment({ id, appointment, jsonifyattendancesString, stringifyAttendancesJSON, serverURL }) {
+function ModifyAppointment({ id, appointment, jsonifyattendancesString, stringifyAttendancesJSON, serverURL, theUser }) {
 
     console.log(appointment)
+    // let attendingStatus = appointment.attendances.filter((a) => { return a.user_id === theUser.id })[0].status
+    let attendingStatus = 'Going'
 
     const blankForm = {
         title: appointment.title,
@@ -14,7 +16,7 @@ function ModifyAppointment({ id, appointment, jsonifyattendancesString, stringif
         end: appointment.end,
         attendancesString: '',
         status: appointment.status, // modifiable only if the user is the owner of the appointment
-        attendingStatus: '',
+        attendingStatus: attendingStatus,
         additionalattendances: ''
     }
 
@@ -52,7 +54,7 @@ function ModifyAppointment({ id, appointment, jsonifyattendancesString, stringif
                 <br />
                 <p>Location: {appointment.location}</p>
                 <p>Starts: {appointment.start_time}</p>
-                <p>End: {appointment.end}</p>
+                <p>End: {appointment.end_time}</p>
                 <p>Appointment status:</p>
                 <input type="radio" id="active" name="status" value="Active" onChange={formik.handleChange} />
                 <label htmlFor="active">Active</label>
@@ -67,7 +69,7 @@ function ModifyAppointment({ id, appointment, jsonifyattendancesString, stringif
                 <input type="radio" id="not-going" name="attendingStatus" value="Not going" onChange={formik.handleChange} />
                 <label htmlFor="not-going">Not going</label>
                 <br />
-                <p>Invited: {stringifyAttendancesJSON(appointment.attendances)}</p>
+                <p>Invited (user IDs): {stringifyAttendancesJSON(appointment.attendances)}</p>
                 <label htmlFor="additionalattendances">Invite additional users (usernames separated by commas):</label>
                 <input type="text" id="additionalattendances" name="additionalattendances" value={formik.values.additionalattendances} onChange={formik.handleChange} />
                 <br />

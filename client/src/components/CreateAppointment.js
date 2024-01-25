@@ -1,19 +1,27 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const CreateAppointment = ({ jsonifyattendancesString }) => {
+const CreateAppointment = ({ jsonifyattendancesString, serverURL }) => {
     const formik = useFormik({
         initialValues: {
             title: '',
             location: '',
             description: '',
-            start: '',
+            start_time: '',
             end: '',
             attendancesString: ''
         },
         onSubmit: values => {
+            values.owner_id = //current user id
             values.attendances = jsonifyattendancesString(values.attendancesString);
-            // handle submission
+            fetch(`${serverURL}/appointments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            })
+
         },
     });
 

@@ -6,7 +6,7 @@ function ViewAppointment({ appointment, stringifyattendancesJSON }) {
     console.log("viewing appointment")
     console.log(appointment)
 
-    let attendances = stringifyattendancesJSON(appointment.attendances)
+    let attendancesString = stringifyattendancesJSON(appointment.attendances)
 
 
     // function fetchAppointment(id) {
@@ -27,12 +27,12 @@ function ViewAppointment({ appointment, stringifyattendancesJSON }) {
         <p><a href={`/modify/${appointment.id}`}>Modify this appointment</a></p>
         <p>Title: {appointment.title}</p>
         <p>Owner: {appointment.owner.username}</p>
-        <p>Starts: {appointment.start}</p>
-        <p>Ends: {appointment.end}</p>
+        <p>Starts: {appointment.start_time}</p>
+        <p>Ends: {appointment.end_time}</p>
         <p>Location: {appointment.location}</p>
         <p>Status: {appointment.status}</p>
         <p>Description: {appointment.description}</p>
-        <p>attendances: {attendances}</p>
+        <p>attendances (user IDs): {attendancesString}</p>
     </div>;
 }
 
