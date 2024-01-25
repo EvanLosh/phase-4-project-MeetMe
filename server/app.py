@@ -1,9 +1,10 @@
 
-from flask import Flask, request
+from flask import Flask, request, make_response
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
 from models import User, Appointment, Attendance, db 
 from flask_sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -21,7 +22,10 @@ db.init_app(app)
 
 class UsersResource(Resource):
     def get(self):
-        users = [u.to_dict() for u in User.query.all()]
+        users = [u.to_dict() for u in User.query.all()] # error: User object has no attribute to_dict()
+        # users_response = make_response({
+        #     users
+        # }, 200)
         return users
 
     def post(self):
