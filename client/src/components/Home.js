@@ -17,7 +17,7 @@ function Home({ users, serverURL, theUser }) {
         setAppointments(newAppointments);
     };
 
-    const getAppointment = () => {
+    const getAppointments = () => {
         fetch(`${serverURL}/appointments`)
             .then(response => response.json())
             .then((a) => {
@@ -27,7 +27,7 @@ function Home({ users, serverURL, theUser }) {
             .catch(error => console.error('Error:', error));
     }
 
-    useEffect(getAppointment, [])
+    useEffect(getAppointments, [])
 
     const fetchAppointment = (appointment) => {
         if ('id' in appointment) {
@@ -72,6 +72,7 @@ function Home({ users, serverURL, theUser }) {
                 theUser={theUser}
                 serverURL={serverURL}
                 addAppointment={addAppointment}
+                users={users}
             />
         </div>
     );

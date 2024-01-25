@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 
 
 
-function ViewAppointment({ appointment, stringifyattendancesJSON }) {
+function ViewAppointment({ appointment, stringifyAttendancesJSON }) {
     console.log("viewing appointment")
     console.log(appointment)
 
-    let attendancesString = stringifyattendancesJSON(appointment.attendances)
+    let attendancesString = stringifyAttendancesJSON(appointment.attendances)
 
 
     // function fetchAppointment(id) {

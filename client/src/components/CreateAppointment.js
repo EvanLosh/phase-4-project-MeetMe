@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const CreateAppointment = ({ jsonifyattendancesString, serverURL, theUser }) => {
+const CreateAppointment = ({ jsonifyAttendancesString, serverURL, theUser, users }) => {
     const formik = useFormik({
         initialValues: {
             title: '',
@@ -13,7 +13,9 @@ const CreateAppointment = ({ jsonifyattendancesString, serverURL, theUser }) => 
         },
         onSubmit: values => {
             values.owner_id = theUser.id
-            values.attendances = jsonifyattendancesString(values.attendancesString);
+            values.attendances = values.attendancesString.split(', ').map((s) => {
+                return { user_id: users.filter(u => u.username === s)[0].id }
+            });
             console.log('Creating new appointment from form data:')
             console.log(values)
             fetch(`${serverURL}/appointments`, {
