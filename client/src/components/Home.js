@@ -8,6 +8,10 @@ function Home({ users, serverURL, theUser }) {
     // const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
 
+    function addAppointment(appointment) {
+        setAppointments([...appointments, appointment])
+    }
+
     // Fetch users
     // useEffect(() => {
     //     fetch('http://localhost:5000/users')  // Replace with your actual API endpoint
@@ -78,7 +82,7 @@ function Home({ users, serverURL, theUser }) {
                 ))}
             </select>
             <RenderCalendar appointments={appointments} />
-            <AppointmentsForm updateAppointments={updateAppointments} appointments={appointments} fetchAppointment={fetchAppointment} theUser={theUser} serverURL={serverURL} />
+            <AppointmentsForm updateAppointments={updateAppointments} appointments={appointments} fetchAppointment={fetchAppointment} theUser={theUser} serverURL={serverURL} addAppointment={addAppointment} />
         </div>
     );
 }
