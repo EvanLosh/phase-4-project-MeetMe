@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useFormik } from 'formik';
 import CreateAppointment from "./CreateAppointment";
 import ViewAppointment from "./ViewAppointment";
 import ModifyAppointment from "./ModifyAppointment";
@@ -46,23 +47,31 @@ function jsonifyAttendeesString(string) {
 }
 
 
-function AppointmentsForm({ fetchAppointment, appointments }) {
-    const formData = {}
+function AppointmentsForm() {
     const { child, id } = useParams()
-    // fetch the appointment by id from /appointments/<int:id> 
-    // const attendees = appointment.attendees.map((attendee) => {
-    //     return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
-    // })
-    const submitAppointment = async (e, method) => {
-        const requestOptions = {
-            method: method.toUpperCase(),
-            headers: {
-                'Accept': 'application/json',
-                // Add any other headers needed?
-            },
-            body: formData,
-        };
-    }
+    const [appointment, setAppointment] = useState(blankAppointment)
+
+    const attendees = appointment.attendees.map((attendee) => {
+        return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>
+    })
+
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            start: '',
+            end: '',
+            description: '',
+            owner: '',
+            location: '',
+            status: 'Active',
+            attendees: '',
+        },
+        onSubmit: values => {
+            values.attendees = jsonifyAttendeesString(values.attendees);
+            // handle submission
+        },
+    });
+
 
     function chooseForm(child, id = -1) {
         let appointment = appointments.filter((a) => { return a.id === id })[0]
@@ -79,23 +88,18 @@ function AppointmentsForm({ fetchAppointment, appointments }) {
             return <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} fetchAppointment={fetchAppointment} />
         }
     }
-    return (
-        <div id="appointments-form">
-            <p>appointments form</p>
-            <div id="appointment-form-options">
-                <a href="/">Create</a>
-                <a href={"/view/" + id}>View</a>
-                <a href={"/modify/" + id}>Modify</a>
-            </div>
-            {chooseForm(child, id)}
-            {/*
-            <button onClick={() => submitAppointment('post')}>Create Appointment</button>
-            <button onClick={() => submitAppointment('patch')}>Update Appointment</button>
-            <button onClick={() => submitAppointment('delete')}>Delete Appointment</button>
-            */}
+
+
+    return <div id="appointments-form">
+        <p>appointments form</p>
+        <div id="appointment-form-options">
+            <a href="/">Create</a>
+            <a href={"/view/" + id}>View</a>
+            <a href={"/modify/" + id}>Modify</a>
+
         </div>
-    );
+        {chooseForm(child, id)}
+    </div>;
 }
 
 export default AppointmentsForm;
-
