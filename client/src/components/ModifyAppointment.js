@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from 'react';
+import { useFormik } from 'formik';
 
 const blankForm = {
     title: '',
@@ -12,74 +13,60 @@ const blankForm = {
     additionalAttendees: ''
 }
 
-function ModifyAppointment({ id, appointment, fetchAppointment, jsonifyAttendeesString }) {
-    const [formData, setFormData] = useState(blankForm)
+function ModifyAppointment({ id, appointment, attendees, jsonifyAttendeesString }) {
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target
-        setFormData({
-            ...formData,
-            [name]: value,
-        })
-    }
+    const formik = useFormik({
+        initialValues: blankForm,
+        onSubmit: values => {
+            fetch(`http://localhost:5000/appointments/${id}`, {  // Replace with our actual API endpoint
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(values),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        },
+    });
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const appointment = { ...formData, attendees: jsonifyAttendeesString(formData.attendeesString) }
-        console.log(`creating appointment from form data: ${appointment}`)
-        fetchAppointment(appointment)
-    }
+    return (
+        <div id="modify-appointment">
+            <p>modify appointment. id = {id}.</p>
+            <form onSubmit={formik.handleSubmit}>
+                <label htmlFor="title">Title:</label>
+                <input type="text" id="title" name="title" value={formik.values.title} onChange={formik.handleChange} />
+                <br />
+                <label htmlFor="description">Description:</label>
+                <input type="text" id="description" name="description" value={formik.values.description} onChange={formik.handleChange} />
+                <br />
+                <p>Location: {appointment.location}</p>
+                <p>Starts: {appointment.start}</p>
+                <p>End: {appointment.end}</p>
+                <p>Appointment status:</p>
+                <input type="radio" id="active" name="status" value="Active" onChange={formik.handleChange} />
+                <label htmlFor="active">Active</label>
+                <input type="radio" id="canceled" name="status" value="Canceled" onChange={formik.handleChange} />
+                <label htmlFor="canceled">Canceled</label>
+                <input type="radio" id="rescheduled" name="status" value="Rescheduled" onChange={formik.handleChange} />
+                <label htmlFor="rescheduled">Rescheduled</label>
+                <br />
+                <p>Your status:</p>
+                <input type="radio" id="going" name="attendingStatus" value="Going" onChange={formik.handleChange} />
+                <label htmlFor="going">Going</label>
+                <input type="radio" id="not-going" name="attendingStatus" value="Not going" onChange={formik.handleChange} />
+                <label htmlFor="not-going">Not going</label>
+                <br />
+                <label htmlFor="additionalAttendees">Invite additional users (usernames separated by commas):</label>
+                <input type="text" id="additionalAttendees" name="additionalAttendees" value={formik.values.additionalAttendees} onChange={formik.handleChange} />
+                <br />
+                <input type="submit" value="Update appointment" />
+            </form>
+        </div>
+    );
 
-    return <div id="modify-appointment">
-        <p>modify appointment. id = {id}.</p>
-        {/* get the appointment from the server by id and patch it or delete it using form input */}
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="fname">Title:</label>
-            <input type="text" id="fname" name="title" value={formData.title} onChange={handleInputChange}></input>
-            <br></br>
-            <label htmlFor="lname">Description:</label>
-            <input type="text" id="lname" name="description" value={formData.description} onChange={handleInputChange}></input>
-            <br></br>
-
-            <p>Location: {appointment.location}</p>
-            <p>Starts: {appointment.start}</p>
-            <p>End: {appointment.end}</p>
-
-            {/* Location, start, and end should probably not be modifiable
-
-            <label for="lname">Location:</label>
-            <input type="text" id="lname" name="location" value={formData.location} onChange={handleInputChange}></input>
-            <br></br>
-            <label for="lname">Datetime start:</label>
-            <input type="text" id="lname" name="start" value={formData.start} onChange={handleInputChange}></input>
-            <br></br>
-            <label for="lname">Datetime end:</label>
-            <input type="text" id="lname" name="end" value={formData.end} onChange={handleInputChange}></input>
-            <br></br> 
-            */}
-
-            <p>Appointment status:</p>
-            <input type="radio" id="active" name="status" value="Active" onChange={handleInputChange}></input>
-            <label htmlFor="active">Active</label>
-            <input type="radio" id="canceled" name="status" value="Canceled" onChange={handleInputChange}></input>
-            <label htmlFor="canceled">Canceled</label>
-            <input type="radio" id="rescheduled" name="status" value="Rescheduled" onChange={handleInputChange}></input>
-            <label htmlFor="rescheduled">Rescheduled</label>
-            <br></br>
-
-            <p>Your status:</p>
-            <input type="radio" id="going" name="attendingStatus" value="Going" onChange={handleInputChange}></input>
-            <label htmlFor="going">Going</label>
-            <input type="radio" id="not-going" name="attendingStatus" value="Not going" onChange={handleInputChange}></input>
-            <label htmlFor="not-going">Not going</label>
-            <br></br>
-
-            <label htmlFor="lname">Invite additional users (usernames separated by commas):</label>
-            <input type="text" id="lname" name="attendeesString" value={formData.attendeesString} onChange={handleInputChange}></input>
-            <br></br>
-            <input type="submit" value="Update appointment"></input>
-        </form>
-    </div>;
-}
-
-export default ModifyAppointment;

@@ -1,58 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React from 'react';
+import { useFormik } from 'formik';
 
-const blankForm = {
-    title: '',
-    location: '',
-    description: '',
-    start: '',
-    end: '',
-    attendeesString: ''
-}
+const CreateAppointment = ({ jsonifyAttendeesString }) => {
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            location: '',
+            description: '',
+            start: '',
+            end: '',
+            attendeesString: ''
+        },
+        onSubmit: values => {
+            values.attendees = jsonifyAttendeesString(values.attendeesString);
+            // handle submission
+        },
+    });
+
 
 
 function CreateAppointment({ jsonifyAttendeesString, fetchAppointment }) {
-    const [formData, setFormData] = useState(blankForm)
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target
-        setFormData({
-            ...formData,
-            [name]: value,
-        })
-    }
+    return (
+        <div id="create-appointment">
+            <p>Create appointment</p>
+            <form onSubmit={formik.handleSubmit}>
+                <label htmlFor="title">Title:</label>
+                <input type="text" id="title" name="title" value={formik.values.title} onChange={formik.handleChange} />
+                <br />
+                <label htmlFor="description">Description:</label>
+                <input type="text" id="description" name="description" value={formik.values.description} onChange={formik.handleChange} />
+                <br />
+                <label htmlFor="location">Location:</label>
+                <input type="text" id="location" name="location" value={formik.values.location} onChange={formik.handleChange} />
+                <br />
+                <label htmlFor="start">Datetime start:</label>
+                <input type="text" id="start" name="start" value={formik.values.start} onChange={formik.handleChange} />
+                <br />
+                <label htmlFor="end">Datetime end:</label>
+                <input type="text" id="end" name="end" value={formik.values.end} onChange={formik.handleChange} />
+                <br />
+                <label htmlFor="attendeesString">Invite users (usernames separated by commas):</label>
+                <input type="text" id="attendeesString" name="attendeesString" value={formik.values.attendeesString} onChange={formik.handleChange} />
+                <br />
+                <input type="submit" value="Create appointment" />
+            </form>
+        </div>
+    );
+};
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        const appointment = { ...formData, attendees: jsonifyAttendeesString(formData.attendeesString) }
-        console.log(`creating appointment from form data: ${appointment}`)
-        fetchAppointment(appointment)
-    }
-
-    return <div id="create-appointment">
-        <p>Create appointment</p>
-        {/* a form to post a new appointment to the db */}
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="fname">Title:</label>
-            <input type="text" id="fname" name="title" value={formData.title} onChange={handleInputChange}></input>
-            <br></br>
-            <label htmlFor="lname">Description:</label>
-            <input type="text" id="lname" name="description" value={formData.description} onChange={handleInputChange}></input>
-            <br></br>
-            <label htmlFor="lname">Location:</label>
-            <input type="text" id="lname" name="location" value={formData.location} onChange={handleInputChange}></input>
-            <br></br>
-            <label htmlFor="lname">Datetime start:</label>
-            <input type="text" id="lname" name="start" value={formData.start} onChange={handleInputChange}></input>
-            <br></br>
-            <label htmlFor="lname">Datetime end:</label>
-            <input type="text" id="lname" name="end" value={formData.end} onChange={handleInputChange}></input>
-            <br></br>
-            <label htmlFor="lname">Invite users (usernames separated by commas):</label>
-            <input type="text" id="lname" name="attendeesString" value={formData.attendeesString} onChange={handleInputChange}></input>
-            <br></br>
-            <input type="submit" value="Create appointment" ></input>
-        </form>
-    </div>;
-}
 
 export default CreateAppointment;
