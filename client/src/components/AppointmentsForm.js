@@ -13,7 +13,7 @@ const blankAppointment = {
     owner: '',
     location: '',
     status: 'Active',
-    attendees: [
+    attendances: [
         {
             username: '',
             status: ''
@@ -21,7 +21,7 @@ const blankAppointment = {
     ]
 };
 
-function stringifyAttendeesJSON(list) {
+function stringifyattendancesJSON(list) {
     let stringify = '';
     for (let i = 0; i < list.length; i++) {
         if (i === (list.length - 1)) {
@@ -33,22 +33,25 @@ function stringifyAttendeesJSON(list) {
     return stringify;
 }
 
-function jsonifyAttendeesString(string) {
-    let attendees = [];
+function jsonifyattendancesString(string) {
+    let attendances = [];
     let stringList = string.split(", ");
     for (let i = 0; i < stringList.length; i++) {
-        attendees.push({ username: stringList[i], status: 'Unconfirmed' });
+        attendances.push({ username: stringList[i], status: 'Unconfirmed' });
     }
-    return attendees;
+    return attendances;
 }
 
-function AppointmentsForm() {
+function AppointmentsForm({ appointments, serverURL }) {
     const { child, id } = useParams();
     const [appointment, setAppointment] = useState(blankAppointment);
-
-    const attendees = appointment.attendees.map((attendee) => {
-        return <p key={attendee.username}>{attendee.username}: {attendee.status}</p>;
-    });
+    useEffect(() => {
+        if ((id > 0)) {
+            fetch(`${serverURL}/appointments/${id}`)
+                .then(r => r.json())
+                .then(r => setAppointment(r))
+        }
+    }, [])
 
     const submitAppointment = async (method) => {
         const requestOptions = {
@@ -69,9 +72,9 @@ function AppointmentsForm() {
                 <a href={"/view/" + id}>View</a>
                 <a href={"/modify/" + id}>Modify</a>
             </div>
-            {child === "view" && <ViewAppointment id={id} appointment={appointment} attendees={attendees} stringifyAttendeesJSON={stringifyAttendeesJSON} />}
-            {child === "modify" && <ModifyAppointment id={id} appointment={appointment} attendees={attendees} jsonifyAttendeesString={jsonifyAttendeesString} />}
-            {child !== "view" && child !== "modify" && <CreateAppointment jsonifyAttendeesString={jsonifyAttendeesString} />}
+            {child === "view" && <ViewAppointment id={id} appointment={appointment} stringifyattendancesJSON={stringifyattendancesJSON} />}
+            {child === "modify" && <ModifyAppointment id={id} appointment={appointment} jsonifyattendancesString={jsonifyattendancesString} />}
+            {child !== "view" && child !== "modify" && <CreateAppointment jsonifyattendancesString={jsonifyattendancesString} />}
             <button onClick={() => submitAppointment('post')}>Create Appointment</button>
             <button onClick={() => submitAppointment('patch')}>Update Appointment</button>
             <button onClick={() => submitAppointment('delete')}>Delete Appointment</button>
