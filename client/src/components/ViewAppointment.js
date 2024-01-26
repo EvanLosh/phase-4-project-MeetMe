@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 
 
 
-function ViewAppointment({ id, appointment, stringifyAttendeesJSON }) {
+function ViewAppointment({ appointment, stringifyattendancesJSON }) {
+    console.log("viewing appointment")
+    console.log(appointment)
 
-    let attendees = stringifyAttendeesJSON(appointment.attendees)
+    let attendancesString = stringifyattendancesJSON(appointment.attendances)
 
 
     // function fetchAppointment(id) {
@@ -21,16 +23,16 @@ function ViewAppointment({ id, appointment, stringifyAttendeesJSON }) {
 
     return <div id="view-appointment">
         {/* get the appointment from the server by id and show the details here */}
-        <p>View appointment. id = {id}.</p>
-        <p><a href={`/modify/${id}`}>Modify this appointment</a></p>
-        <p>{appointment.title}</p>
-        <p>Owner: {appointment.owner}</p>
-        <p>Starts: {appointment.start}</p>
-        <p>Ends: {appointment.end}</p>
+        <p>View appointment. id = {appointment.id}.</p>
+        <p><a href={`/modify/${appointment.id}`}>Modify this appointment</a></p>
+        <p>Title: {appointment.title}</p>
+        <p>Owner: {appointment.owner.username}</p>
+        <p>Starts: {appointment.start_time}</p>
+        <p>Ends: {appointment.end_time}</p>
         <p>Location: {appointment.location}</p>
         <p>Status: {appointment.status}</p>
         <p>Description: {appointment.description}</p>
-        <p>Attendees: {attendees}</p>
+        <p>attendances (user IDs): {attendancesString}</p>
     </div>;
 }
 

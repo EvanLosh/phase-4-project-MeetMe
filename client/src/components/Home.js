@@ -1,30 +1,24 @@
 import React, { useEffect, useState } from "react";
 import RenderCalendar from "./RenderCalendar";
 import AppointmentsForm from "./AppointmentsForm";
-import "./Home.css"
+import "./Home.css";
 
-function Home({ users, serverURL }) {
+function Home({ users, serverURL, theUser }) {
     const [appointments, setAppointments] = useState([]);
-    // const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
 
-    // Fetch users
-    // useEffect(() => {
-    //     fetch('http://localhost:5000/users')  // Replace with your actual API endpoint
-    //         .then(response => response.json())
-    //         .then(data => setUsers(data))
-    //         .catch(error => console.error('Error:', error));
-    // }, []);
+    function addAppointment(appointment) {
+        setAppointments([...appointments, appointment]);
+    }
 
-    // Fetch appointments when selectedUser changes
-    useEffect(() => {
-        if (selectedUser) {
-            fetch(`http://localhost:5000/appointments/${selectedUser.id}`)  // Replace with your actual API endpoint
-                .then(response => response.json())
-                .then(data => setAppointments(data))
-                .catch(error => console.error('Error:', error));
-        }
-    }, [selectedUser]);
+    // useEffect(() => {
+    //     if (selectedUser) {
+    //         fetch(`${serverURL}/appointments/${selectedUser.id}`)
+    //             .then(response => response.json())
+    //             .then(data => setAppointments(data))
+    //             .catch(error => console.error('Error:', error));
+    //     }
+    // }, [selectedUser, serverURL]);
 
     const handleUserChange = (event) => {
         const userId = event.target.value;
@@ -32,40 +26,56 @@ function Home({ users, serverURL }) {
         setSelectedUser(user);
     };
 
+
+
     const updateAppointments = (newAppointments) => {
         setAppointments(newAppointments);
     };
 
-    function fetchAppointment(appointment) {
+    const getAppointment = () => {
+        fetch(`${serverURL}/appointments`)
+            .then(response => response.json())
+            .then((a) => {
+                setAppointments(a);
+                console.log(a)
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    useEffect(getAppointment, [])
+
+    const fetchAppointment = (appointment) => {
         if ('id' in appointment) {
-            fetch(serverURL + '/appointments', {
+            fetch(`${serverURL}/appointments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(appointment),
             })
-                .then(r => r.json)
-                .then((r) => {
-                    setAppointments(
-                        [...appointments, r]
-                    )
+                .then(response => response.json())
+                .then((newAppointment) => {
+                    addAppointment(newAppointment);
                 })
-        }
-        else {
-            fetch(serverURL + `/appointments/${appointment.id}`, {
+                .catch(error => console.error('Error:', error));
+        } else {
+            fetch(`${serverURL}/appointments/${appointment.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(appointment),
             })
-                .then(r => r.json)
-                .then(
-                // update the appointments state with the modified appointment
-            )
+                .then(response => response.json())
+                .then(updatedAppointment => {
+                    const updatedAppointments = appointments.map(app =>
+                        app.id === updatedAppointment.id ? updatedAppointment : app
+                    );
+                    updateAppointments(updatedAppointments);
+                })
+                .catch(error => console.error('Error:', error));
         }
-    }
+    };
 
     return (
         <div id="home">
@@ -76,7 +86,14 @@ function Home({ users, serverURL }) {
                 ))}
             </select>
             <RenderCalendar appointments={appointments} />
-            <AppointmentsForm updateAppointments={updateAppointments} appointments={appointments} fetchAppointment={fetchAppointment} />
+            <AppointmentsForm
+                updateAppointments={updateAppointments}
+                appointments={appointments}
+                fetchAppointment={fetchAppointment}
+                theUser={theUser}
+                serverURL={serverURL}
+                addAppointment={addAppointment}
+            />
         </div>
     );
 }

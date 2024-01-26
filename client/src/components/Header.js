@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Header.css"
 
+
 function Header({ users, theUser, onUserChange }) {
     if (theUser.username.length < 1) {
         theUser.username = "None"
     }
+
 
     const handleSelectChange = (event) => {
         onUserChange(event.target.value);
