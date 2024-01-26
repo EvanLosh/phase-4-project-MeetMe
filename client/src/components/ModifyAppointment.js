@@ -2,7 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 
 
-function ModifyAppointment({ id, appointment, jsonifyattendancesString, stringifyAttendancesJSON, serverURL, theUser }) {
+function ModifyAppointment({ id, appointment, jsonifyAttendancesString, stringifyAttendancesJSON, serverURL, theUser }) {
 
     console.log(appointment)
     // let attendingStatus = appointment.attendances.filter((a) => { return a.user_id === theUser.id })[0].status
@@ -23,7 +23,7 @@ function ModifyAppointment({ id, appointment, jsonifyattendancesString, stringif
     const formik = useFormik({
         initialValues: blankForm,
         onSubmit: values => {
-            values.attendances = jsonifyattendancesString(values.additionalattendances)
+            values.attendances = jsonifyAttendancesString(values.additionalattendances)
             console.log(values)
             fetch(serverURL + `/appointments/${id}`, {  // Replace with our actual API endpoint
                 method: 'PUT',

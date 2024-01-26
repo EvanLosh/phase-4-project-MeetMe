@@ -1,4 +1,3 @@
-
 from flask import Flask, request, make_response
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
@@ -6,16 +5,17 @@ from models import User, Appointment, Attendance, db
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import requests
+from datetime import datetime
 
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app, resources={r'/*': {"origins": "*"}})
 # configure the database connection to the local file app.db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 
 # configure flag to disable modification tracking and use less memory
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-CORS(app)
 # create a Migrate object to manage schema modifications
 migrate = Migrate(app, db)
 
@@ -79,10 +79,14 @@ class AppointmentsResource(Resource):
         return appointments
 
     def post(self):
-        appointment_data = request.get_json()
-        appointment = Appointment(**appointment_data)
+        print(request.get_json())
+        data = request.get_json()
+        appointment = Appointment(title = data['title'], location = data['location'], start_time = datetime.now(), end_time = datetime.now() , description = data['description'], owner_id = data['owner_id'], status = 'Active')
         db.session.add(appointment)
         db.session.commit()
+        attendances = [Attendance(appointment_id = appointment.id, user_id = appointment.owner_id, status = 'Going')]
+        for a in data['attendances']:
+            attendances.append(Attendance(appointment_id = appointment.id, user_id = a['user_id'], status = 'Uncomfirmed'))
         return appointment.to_dict(), 201
 
 class AppointmentResource(Resource):
