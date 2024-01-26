@@ -29,7 +29,7 @@ class UsersResource(Resource):
 
     def post(self):
         user_data = request.get_json()
-        user = User(**user_data)
+        user = User(user_data['username'])
         db.session.add(user)
         db.session.commit()
         return user.to_dict(), 201
@@ -81,12 +81,22 @@ class AppointmentsResource(Resource):
     def post(self):
         print(request.get_json())
         data = request.get_json()
-        appointment = Appointment(title = data['title'], location = data['location'], start_time = datetime.now(), end_time = datetime.now() , description = data['description'], owner_id = data['owner_id'], status = 'Active')
+        data['start_time'] = datetime(int(data['startYYYY']), int(data['startMM']), int(data['startDD']), int(data['starthr']), int(data['startmin']))
+        data['end_time'] = datetime(int(data['endYYYY']), int(data['endMM']), int(data['endDD']), int(data['endhr']), int(data['endmin']))
+        appointment = Appointment(title = data['title'], location = data['location'], start_time = data['start_time'], end_time = data['end_time'] , description = data['description'], owner_id = data['owner_id'], status = 'Active')
         db.session.add(appointment)
         db.session.commit()
-        attendances = [Attendance(appointment_id = appointment.id, user_id = appointment.owner_id, status = 'Going')]
-        for a in data['attendances']:
-            attendances.append(Attendance(appointment_id = appointment.id, user_id = a['user_id'], status = 'Uncomfirmed'))
+        owner_attends = Attendance(appointment_id = appointment.id, user_id = appointment.owner_id, status = 'Going')
+        db.session.add(owner_attends)
+        print(data['attendancesString'].split(', '))
+        invited_ids = [User.query.filter_by(username = s).first().id for s in data['attendancesString'].split(', ')]
+        print(invited_ids)
+        for i in invited_ids:
+            new = Attendance(appointment_id = appointment.id, user_id = i, status = 'Uncomfirmed')
+            db.session.add(new)
+        db.session.commit()
+        # for a in data['attendances']:
+        #     attendances.append(Attendance(appointment_id = appointment.id, user_id = a['user_id'], status = 'Uncomfirmed'))
         return appointment.to_dict(), 201
 
 class AppointmentResource(Resource):

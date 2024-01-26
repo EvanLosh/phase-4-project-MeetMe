@@ -4,3 +4,12 @@
     background-color: #f4f4f4;
     padding: 20px;
 }
+
+.datetime-form input {
+    width: 30px;
+    margin-left: 0;
+}
+
+.datetime-form label {
+    margin-right: 0;
+}
