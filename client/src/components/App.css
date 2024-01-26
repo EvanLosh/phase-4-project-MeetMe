@@ -1,3 +1,15 @@
-#home {
-    color: black;
+#app {
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+}
+
+.datetime-form input {
+    width: 30px;
+    margin-left: 0;
+}
+
+.datetime-form label {
+    margin-right: 0;
 }

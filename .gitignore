@@ -10,6 +10,7 @@ Pipfile.lock
 
 # testing
 /coverage
+/migrations
 
 # production
 /build

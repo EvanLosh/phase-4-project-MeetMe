@@ -1,0 +1,27 @@
+#appointments-form {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px;
+    min-width: 300px;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+#appointment-form-options * {
+    padding: 20px;
+}
+
+#appointment-form-options {
+    display: flex;
+    justify-content: space-between;
+}
+
+label,
+input {
+    margin: 10px;
+}
+
+input [type=text] {
+    width: 90%;
+}
