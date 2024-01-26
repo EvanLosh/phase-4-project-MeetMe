@@ -1,34 +1,37 @@
 import React from 'react';
 import { useFormik } from 'formik';
 
-const CreateAppointment = ({ jsonifyattendancesString, serverURL }) => {
+const CreateAppointment = ({ jsonifyAttendeesString }) => {
     const formik = useFormik({
         initialValues: {
             title: '',
             location: '',
             description: '',
-            start_time: '',
+            start: '',
             end: '',
-            attendancesString: ''
+            attendeesString: ''
         },
-        onSubmit: values => {
-            values.owner_id = //current user id
-            values.attendances = jsonifyattendancesString(values.attendancesString);
-            fetch(`${serverURL}/appointments`, {
+        onSubmit: async (values) => {
+            values.attendees = jsonifyAttendeesString(values.attendeesString);
+            // handle submission
+            const response = await fetch('http://localhost:5000/appointments', { 
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(values),
-            })
-
+                body: JSON.stringify(values)
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(data); // log the response data
         },
     });
 
-
     return (
         <div id="create-appointment">
-            <p>Create a new appointment</p>
+            <p>Create appointment</p>
             <form onSubmit={formik.handleSubmit}>
                 <label htmlFor="title">Title:</label>
                 <input type="text" id="title" name="title" value={formik.values.title} onChange={formik.handleChange} />
@@ -45,14 +48,13 @@ const CreateAppointment = ({ jsonifyattendancesString, serverURL }) => {
                 <label htmlFor="end">Datetime end:</label>
                 <input type="text" id="end" name="end" value={formik.values.end} onChange={formik.handleChange} />
                 <br />
-                <label htmlFor="attendancesString">Invite users (usernames separated by commas):</label>
-                <input type="text" id="attendancesString" name="attendancesString" value={formik.values.attendancesString} onChange={formik.handleChange} />
+                <label htmlFor="attendeesString">Invite users (usernames separated by commas):</label>
+                <input type="text" id="attendeesString" name="attendeesString" value={formik.values.attendeesString} onChange={formik.handleChange} />
                 <br />
                 <input type="submit" value="Create appointment" />
             </form>
         </div>
     );
 };
-
 
 export default CreateAppointment;
