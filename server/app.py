@@ -81,7 +81,9 @@ class AppointmentsResource(Resource):
     def post(self):
         print(request.get_json())
         data = request.get_json()
-        appointment = Appointment(title = data['title'], location = data['location'], start_time = datetime.now(), end_time = datetime.now() , description = data['description'], owner_id = data['owner_id'], status = 'Active')
+        data['start_time'] = datetime(int(data['startYYYY']), int(data['startMM']), int(data['startDD']), int(data['starthr']), int(data['startmin']))
+        data['end_time'] = datetime(int(data['endYYYY']), int(data['endMM']), int(data['endDD']), int(data['endhr']), int(data['endmin']))
+        appointment = Appointment(title = data['title'], location = data['location'], start_time = data['start_time'], end_time = data['end_time'] , description = data['description'], owner_id = data['owner_id'], status = 'Active')
         db.session.add(appointment)
         db.session.commit()
         owner_attends = Attendance(appointment_id = appointment.id, user_id = appointment.owner_id, status = 'Going')
