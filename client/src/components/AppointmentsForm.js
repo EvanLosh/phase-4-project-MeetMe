@@ -27,7 +27,7 @@ function stringifyAttendancesJSON(list) {
         if (i === (list.length - 1)) {
             stringify = stringify + list[i].user_id;
         } else {
-            stringify = stringify + list[i].user_id + ", ";
+            stringify = stringify + list[i].user + ", ";
         }
     }
     return stringify;
@@ -42,10 +42,10 @@ function jsonifyAttendancesString(string) {
     return attendances;
 }
 
-function AppointmentsForm({ appointments, serverURL, theUser, users, addAppointment }) {
+function AppointmentsForm({ appointments, serverURL, theUser }) {
     const { child, id } = useParams();
     const [appointment, setAppointment] = useState(blankAppointment);
-
+    
     useEffect(() => {
         if (id > 0) {
             fetch(`${serverURL}/appointments/${id}`)
@@ -62,7 +62,7 @@ function AppointmentsForm({ appointments, serverURL, theUser, users, addAppointm
             },
             body: JSON.stringify(appointment),
         };
-        fetch(`${serverURL}/appointments/${id}`, requestOptions)
+         fetch(`${serverURL}/appointments/${id}`, requestOptions)
             .then(response => response.json())
             .then(data => {
                 // Handle the data as needed
@@ -71,21 +71,21 @@ function AppointmentsForm({ appointments, serverURL, theUser, users, addAppointm
             })
             .catch(error => {
                 console.error(`Error ${method.toUpperCase()} appointment:`, error);
-
+                
             });
     };
 
     return (
         <div id="appointments-form">
+            <p>appointments form</p>
             <div id="appointment-form-options">
                 <a href="/">Create</a>
                 <a href={"/view/" + id}>View</a>
                 <a href={"/modify/" + id}>Modify</a>
             </div>
-            {child === "view" && <ViewAppointment id={id} theUser={theUser} users={users} appointment={appointment} appointments={appointments} stringifyAttendancesJSON={stringifyAttendancesJSON} />}
-            {child === "modify" && <ModifyAppointment id={id} theUser={theUser} users={users} appointment={appointment} jsonifyAttendancesString={jsonifyAttendancesString} stringifyAttendancesJSON={stringifyAttendancesJSON} serverURL={serverURL} />}
-            {child !== "view" && child !== "modify" && <CreateAppointment theUser={theUser} users={users} jsonifyAttendancesString={jsonifyAttendancesString} serverURL={serverURL} addAppointment={addAppointment} />}
-
+            {child === "view" && <ViewAppointment id={id} theUser={theUser} appointment={appointment} stringifyAttendancesJSON={stringifyAttendancesJSON} />}
+            {child === "modify" && <ModifyAppointment id={id} theUser={theUser} appointment={appointment} jsonifyAttendancesString={jsonifyAttendancesString} stringifyAttendancesJSON={stringifyAttendancesJSON} serverURL={serverURL} />}
+            {child !== "view" && child !== "modify" && <CreateAppointment theUser={theUser} jsonifyAttendancesString={jsonifyAttendancesString} serverURL={serverURL} />}
         </div>
     );
 }

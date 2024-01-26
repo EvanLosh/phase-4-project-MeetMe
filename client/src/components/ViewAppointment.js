@@ -2,12 +2,23 @@ import React, { useEffect, useState } from "react";
 
 
 
-function ViewAppointment({ appointment, stringifyAttendancesJSON, appointments }) {
+function ViewAppointment({ appointment, stringifyattendancesJSON }) {
     console.log("viewing appointment")
     console.log(appointment)
-    let attendancesString = stringifyAttendancesJSON(appointment.attendances)
 
-    useEffect(() => { console.log(appointments) }, [])
+    let attendancesString = stringifyattendancesJSON(appointment.attendances)
+
+
+    // function fetchAppointment(id) {
+    //     const url = `http://127.0.0.1:5555/appointments/<int:${id}>`
+    //     fetch(url)
+    //         .then(r => r.json())
+    //         .then(data => setAppointment(data))
+    // }
+
+    // fetchAppointment(id)
+
+
 
 
     return <div id="view-appointment">

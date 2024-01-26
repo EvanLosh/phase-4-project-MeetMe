@@ -16,7 +16,7 @@ function Header({ users, theUser, onUserChange }) {
         <h1 id="site-title"><a href="/">MeetMe</a></h1>
         <div id="header-stuff">
             <p>Current user: {theUser.username}</p>
-            <p>Change user:
+            <p>Change user
                 <select onChange={handleSelectChange}>
                     {users.map(user => (
                         <option key={user.id} value={user.id}>

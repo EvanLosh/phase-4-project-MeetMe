@@ -1,3 +1,4 @@
+
 from flask import Flask, request, make_response
 from flask_migrate import Migrate
 from flask_restful import Resource, Api
@@ -5,17 +6,16 @@ from models import User, Appointment, Attendance, db
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import requests
-from datetime import datetime
 
 app = Flask(__name__)
 api = Api(app)
-cors = CORS(app, resources={r'/*': {"origins": "*"}})
 # configure the database connection to the local file app.db
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 
 # configure flag to disable modification tracking and use less memory
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+CORS(app)
 # create a Migrate object to manage schema modifications
 migrate = Migrate(app, db)
 
@@ -29,7 +29,7 @@ class UsersResource(Resource):
 
     def post(self):
         user_data = request.get_json()
-        user = User(user_data['username'])
+        user = User(**user_data)
         db.session.add(user)
         db.session.commit()
         return user.to_dict(), 201
@@ -40,7 +40,7 @@ class UsersResource(Resource):
             self.create_user(username)
 
     def create_user(self, username):
-        url = 'http://127.0.0.1:5000/users'  # Update with your API URL
+        url = 'http://127.0.0.1:5000/new-user'  # Update with your API URL
         data = {'username': username}
         response = requests.post(url, json=data)
         if response.status_code == 201:
@@ -79,24 +79,10 @@ class AppointmentsResource(Resource):
         return appointments
 
     def post(self):
-        print(request.get_json())
-        data = request.get_json()
-        data['start_time'] = datetime(int(data['startYYYY']), int(data['startMM']), int(data['startDD']), int(data['starthr']), int(data['startmin']))
-        data['end_time'] = datetime(int(data['endYYYY']), int(data['endMM']), int(data['endDD']), int(data['endhr']), int(data['endmin']))
-        appointment = Appointment(title = data['title'], location = data['location'], start_time = data['start_time'], end_time = data['end_time'] , description = data['description'], owner_id = data['owner_id'], status = 'Active')
+        appointment_data = request.get_json()
+        appointment = Appointment(**appointment_data)
         db.session.add(appointment)
         db.session.commit()
-        owner_attends = Attendance(appointment_id = appointment.id, user_id = appointment.owner_id, status = 'Going')
-        db.session.add(owner_attends)
-        print(data['attendancesString'].split(', '))
-        invited_ids = [User.query.filter_by(username = s).first().id for s in data['attendancesString'].split(', ')]
-        print(invited_ids)
-        for i in invited_ids:
-            new = Attendance(appointment_id = appointment.id, user_id = i, status = 'Uncomfirmed')
-            db.session.add(new)
-        db.session.commit()
-        # for a in data['attendances']:
-        #     attendances.append(Attendance(appointment_id = appointment.id, user_id = a['user_id'], status = 'Uncomfirmed'))
         return appointment.to_dict(), 201
 
 class AppointmentResource(Resource):
