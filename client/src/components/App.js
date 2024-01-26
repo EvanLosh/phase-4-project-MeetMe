@@ -41,10 +41,16 @@ function App() {
 
   function fetchUsers() {
     fetch(serverURL + "/users")
-      .then(r => r.json())
-      .then(r => setUsers(r))
-    setTheUser(users[0])
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch users');
+        }
+        return response.json();
+      })
+      .then(data => setUsers(data))
+      .catch(error => console.error('Error fetching users:', error));
   }
+  
 
   const handleUserChange = (selectedUserId) => {
     const selectedUser = users.find(user => user.id === parseInt(selectedUserId));
