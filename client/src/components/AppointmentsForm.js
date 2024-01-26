@@ -42,7 +42,7 @@ function jsonifyAttendancesString(string) {
     return attendances;
 }
 
-function AppointmentsForm({ appointments, serverURL, theUser, users }) {
+function AppointmentsForm({ appointments, serverURL, theUser, users, addAppointment }) {
     const { child, id } = useParams();
     const [appointment, setAppointment] = useState(blankAppointment);
 
@@ -82,9 +82,9 @@ function AppointmentsForm({ appointments, serverURL, theUser, users }) {
                 <a href={"/view/" + id}>View</a>
                 <a href={"/modify/" + id}>Modify</a>
             </div>
-            {child === "view" && <ViewAppointment id={id} theUser={theUser} users={users} appointment={appointment} stringifyAttendancesJSON={stringifyAttendancesJSON} />}
+            {child === "view" && <ViewAppointment id={id} theUser={theUser} users={users} appointment={appointment} appointments={appointments} stringifyAttendancesJSON={stringifyAttendancesJSON} />}
             {child === "modify" && <ModifyAppointment id={id} theUser={theUser} users={users} appointment={appointment} jsonifyAttendancesString={jsonifyAttendancesString} stringifyAttendancesJSON={stringifyAttendancesJSON} serverURL={serverURL} />}
-            {child !== "view" && child !== "modify" && <CreateAppointment theUser={theUser} users={users} jsonifyAttendancesString={jsonifyAttendancesString} serverURL={serverURL} />}
+            {child !== "view" && child !== "modify" && <CreateAppointment theUser={theUser} users={users} jsonifyAttendancesString={jsonifyAttendancesString} serverURL={serverURL} addAppointment={addAppointment} />}
 
         </div>
     );

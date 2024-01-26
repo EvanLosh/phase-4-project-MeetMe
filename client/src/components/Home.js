@@ -5,13 +5,12 @@ import "./Home.css";
 
 function Home({ users, serverURL, theUser }) {
     const [appointments, setAppointments] = useState([]);
-    let userAppointments = appointments.filter((a) => { return theUser.id in a.attendances.map((a) => { return a.user_id }) })
+    let userAppointments = appointments.filter((a) => { return a.attendances.map((a) => { return a.user_id }).includes(theUser.id) })
+    console.log(userAppointments)
 
     function addAppointment(appointment) {
         setAppointments([...appointments, appointment]);
     }
-
-
 
     const updateAppointments = (newAppointments) => {
         setAppointments(newAppointments);

@@ -34,7 +34,6 @@ function RenderCalendar({ userAppointments }) {
     calendarEvents = [blankEvent]
   }
 
-
   return <div className="calendar-container">
     <Calendar
       localizer={localizer}
