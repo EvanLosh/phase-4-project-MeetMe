@@ -5,7 +5,7 @@ from flask_restful import Resource, Api
 from models import User, Appointment, Attendance, db 
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
-
+import requests
 
 app = Flask(__name__)
 api = Api(app)
@@ -24,10 +24,7 @@ db.init_app(app)
 
 class UsersResource(Resource):
     def get(self):
-        users = [u.to_dict() for u in User.query.all()] # error: User object has no attribute to_dict()
-        # users_response = make_response({
-        #     users
-        # }, 200)
+        users = [u.to_dict() for u in User.query.all()]
         return users
 
     def post(self):
@@ -36,6 +33,20 @@ class UsersResource(Resource):
         db.session.add(user)
         db.session.commit()
         return user.to_dict(), 201
+
+    def populate_users(self):
+        usernames = ['user1', 'user2', 'user3']  # Example usernames to create
+        for username in usernames:
+            self.create_user(username)
+
+    def create_user(self, username):
+        url = 'http://127.0.0.1:5000/users'  # Update with your API URL
+        data = {'username': username}
+        response = requests.post(url, json=data)
+        if response.status_code == 201:
+            print(f"User '{username}' created successfully!")
+        else:
+            print(f"Failed to create user '{username}'")
 
 class UserResource(Resource):
     def get(self, id):
@@ -84,7 +95,6 @@ class AppointmentResource(Resource):
 
     def put(self, id):
         appointment_data = request.get_json()
-        print(request)
         appointment = Appointment.query.get(id)
         if appointment:
             appointment.update(**appointment_data)
