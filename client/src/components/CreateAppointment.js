@@ -11,12 +11,23 @@ const CreateAppointment = ({ jsonifyAttendeesString }) => {
             end: '',
             attendeesString: ''
         },
-        onSubmit: values => {
+        onSubmit: async (values) => {
             values.attendees = jsonifyAttendeesString(values.attendeesString);
             // handle submission
+            const response = await fetch('http://localhost:5000/appointments', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values)
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            console.log(data); // log the response data
         },
     });
-
 
     return (
         <div id="create-appointment">
