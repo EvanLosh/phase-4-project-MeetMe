@@ -40,7 +40,7 @@ class UsersResource(Resource):
             self.create_user(username)
 
     def create_user(self, username):
-        url = 'http://127.0.0.1:5000/new-user'  # Update with your API URL
+        url = 'http://127.0.0.1:5555/users'  # Update with your API URL
         data = {'username': username}
         response = requests.post(url, json=data)
         if response.status_code == 201:

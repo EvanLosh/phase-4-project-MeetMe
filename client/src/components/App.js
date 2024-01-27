@@ -7,7 +7,7 @@ import Header from "./Header";
 import AppointmentsForm from "./AppointmentsForm";
 import Footer from "./Footer";
 
-const serverURL = "http://127.0.0.1:5000";
+const serverURL = "http://127.0.0.1:5555";
 const blankUser = { username: '', id: -1 };
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
 
   function addUser(user) {
     setUsers([...users, user]);
+    setTheUser(user); // Update the current user to the newly added user
   }
 
   const router = createBrowserRouter([
@@ -44,7 +45,7 @@ function App() {
       .then((r) => r.json())
       .then((data) => {
         setUsers(data);
-        setTheUser(data[0]);
+        setTheUser(data[0]); // Set the first user as the current user by default
       })
       .catch((error) => {
         console.error("Error fetching users:", error);
@@ -72,3 +73,4 @@ function App() {
 }
 
 export default App;
+ 
