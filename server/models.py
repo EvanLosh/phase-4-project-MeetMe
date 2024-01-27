@@ -14,6 +14,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.VARCHAR(20), nullable=False)
     
     serialize_rules = ('-appointments.owner', "-attendances.user", '-appointments.attendances', '-attendances.appointment')
+   
     appointments = db.relationship('Appointment', backref='owner', lazy=True)
     
     def __repr__(self):
